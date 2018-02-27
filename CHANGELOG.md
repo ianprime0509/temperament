@@ -7,6 +7,11 @@ and this project adheres to [Semantic
 Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.0.0-alpha.0] - 2018-02-26
+This is the initial release, extracted from the
+[Temperatune](https://github.com/ianprime0509/temperatune) project.
+
 ### Added
 - Support temperaments defined in JSON using a schema for validation.
 - Implement note to pitch conversion using a temperament.
