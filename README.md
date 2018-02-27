@@ -32,13 +32,14 @@ accepts a single argument, an object in the format described in the
 [temperament format section](#temperament-format):
 
 ```js
+import { Temperament } from 'temperament';
+
 let equalTemperament = new Temperament(equalTemperamentData);
 ```
 
-All properties from the input data (except `notes`) are accessible from the
-temperament object.  For now, see the source code for information on the
-various methods available, since they might change and I don't want to
-constantly rewrite unstable documentation.
+For now, see the source code for information on the various methods available,
+since they might change and I don't want to constantly rewrite unstable
+documentation.
 
 ## Temperament format
 
