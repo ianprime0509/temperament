@@ -8,13 +8,14 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 ### Added
-- Include temperament description as a member of `Temperament`.
+- `source` property in temperament data.
 
 ### Changed
 - Clarify which members of `Temperament` should be considered private using a
   leading underscore
 - Provide accessors for relevant private members (e.g. `getReferenceName`).
 - Make the `prettifyNoteName` function a static member of `Temperament`.
+- Include temperament description as a member of `Temperament`.
 
 ## [1.0.0-alpha.0] - 2018-02-26
 This is the initial release, extracted from the

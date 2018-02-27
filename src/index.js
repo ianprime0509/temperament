@@ -77,6 +77,7 @@ export class Temperament {
     // "Metadata" fields.
     this.name = data.name;
     this.description = data.description;
+    this.source = data.source;
 
     this._octaveBaseName = data.octaveBaseName;
     this._referenceName = data.referenceName;

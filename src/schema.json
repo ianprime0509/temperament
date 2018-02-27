@@ -20,6 +20,11 @@
       "description": "A description of the temperament.",
       "type": "string"
     },
+    "source": {
+      "description": "The source from which the temperament data was obtained.",
+      "type": "string"
+    },
+
     "octaveBaseName": {
       "description": "The name of the base note of the octave.",
       "type": "string"
