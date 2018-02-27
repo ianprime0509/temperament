@@ -20,11 +20,52 @@ export const OCTAVE_SIZE = 1200;
 
 /**
  * Contains a complete description of a musical temperament.
- *
- * Users should not modify any of a Temperament's members directly, as this may
- * cause it to behave unpredictably.
  */
 export class Temperament {
+  /**
+   * Return the "pretty" version of the given note name.
+   *
+   * "Pretty" means replacing elements enclosed in curly braces ({}) by
+   * corresponding Unicode symbols, provided that the element is recognized.
+   * For example, '{sharp}' will be replaced by '♯'.
+   *
+   * Note that this function is supposed to be simple.  Curly braces do not
+   * nest, and an unclosed or unrecognized element sequence will be kept
+   * verbatim in the output, but without the curly braces.  Currently, there is
+   * no way to escape a curly brace, but this may change later.
+   */
+  static prettifyNoteName(name) {
+    const replacements = new Map([['sharp', '♯'], ['flat', '♭']]);
+
+    let pretty = '';
+    let element = '';
+    let inElement = false;
+
+    for (let c of name) {
+      if (inElement) {
+        if (c === '}') {
+          pretty += replacements.has(element)
+            ? replacements.get(element)
+            : element;
+          inElement = false;
+          element = '';
+        } else {
+          element += c;
+        }
+      } else {
+        if (c === '{') {
+          inElement = true;
+        } else {
+          pretty += c;
+        }
+      }
+    }
+
+    pretty += element;
+
+    return pretty;
+  }
+
   /** Construct a new Temperament from the given description. */
   constructor(data) {
     if (!validate(data)) {
@@ -32,12 +73,14 @@ export class Temperament {
         `incorrect temperament format: ${ajv.errorsText(validate.errors)}`
       );
     }
+
+    // "Metadata" fields.
     this.name = data.name;
 
     this._octaveBaseName = data.octaveBaseName;
-    this._referencePitch = data.referencePitch;
     this._referenceName = data.referenceName;
     this._referenceOctave = data.referenceOctave;
+    this._referencePitch = data.referencePitch;
     this._computeOffsets(data.notes);
     // The _noteNames member should always be sorted in increasing order of
     // offset from the octave base.
@@ -110,6 +153,11 @@ export class Temperament {
     return [...this._noteNames];
   }
 
+  /** Return the name of the octave base note. */
+  getOctaveBaseName() {
+    return this._octaveBaseName;
+  }
+
   /**
    * Return an array with octave numbers in order, forming a range with the
    * given radius around the reference octave.
@@ -139,6 +187,26 @@ export class Temperament {
     return (
       this._referencePitch * 2 ** (this.getOffset(note, octave) / OCTAVE_SIZE)
     );
+  }
+
+  /** Return the name of the reference note. */
+  getReferenceName() {
+    return this._referenceName;
+  }
+
+  /** Return the octave number of the reference note. */
+  getReferenceOctave() {
+    return this._referenceOctave;
+  }
+
+  /** Return the reference pitch (in Hz). */
+  getReferencePitch() {
+    return this._referencePitch;
+  }
+
+  /** Set the reference pitch (in Hz). */
+  setReferencePitch(pitch) {
+    this._referencePitch = pitch;
   }
 
   /**
@@ -204,9 +272,9 @@ export class Temperament {
       }
     });
 
-    // Adjust the offsets around the octave base.  To start, we need to
-    // adjust the octave base note itself; it should be at or below the offset
-    // of the reference note, and within one octave of it.
+    // Adjust the offsets around the octave base.  To start, we need to adjust
+    // the octave base note itself; it should be at or below the offset of the
+    // reference note, and within one octave of it.
     if (!this._offsets.has(this._octaveBaseName)) {
       throw new Error('octave base not defined as a note');
     }
@@ -240,48 +308,4 @@ export class Temperament {
     }
     this._offsets.set(note, offset);
   }
-}
-
-/**
- * Return the "pretty" version of the given note name.
- *
- * "Pretty" means replacing elements enclosed in curly braces ({}) by
- * corresponding Unicode symbols, provided that the element is recognized.  For
- * example, '{sharp}' will be replaced by '♯'.
- *
- * Note that this function is supposed to be simple.  Curly braces do not nest,
- * and an unclosed or unrecognized element sequence will be kept verbatim in
- * the output, but without the curly braces.  Currently, there is no way to
- * escape a curly brace, but this may change later.
- */
-export function prettifyNoteName(name) {
-  const replacements = new Map([['sharp', '♯'], ['flat', '♭']]);
-
-  let pretty = '';
-  let element = '';
-  let inElement = false;
-
-  for (let c of name) {
-    if (inElement) {
-      if (c === '}') {
-        pretty += replacements.has(element)
-          ? replacements.get(element)
-          : element;
-        inElement = false;
-        element = '';
-      } else {
-        element += c;
-      }
-    } else {
-      if (c === '{') {
-        inElement = true;
-      } else {
-        pretty += c;
-      }
-    }
-  }
-
-  pretty += element;
-
-  return pretty;
 }

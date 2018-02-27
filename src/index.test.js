@@ -5,7 +5,7 @@
  * license can be found in the LICENSE file in the project root, or at
  * https://opensource.org/licenses/MIT.
  */
-import { OCTAVE_SIZE, Temperament, prettifyNoteName } from '.';
+import { OCTAVE_SIZE, Temperament } from '.';
 
 import equalTemperament from '../temperaments/equal.json';
 import quarterCommaMeantone from '../temperaments/quarterCommaMeantone.json';
@@ -240,24 +240,61 @@ describe('Temperament', () => {
       expect(equal.getPitch('C{sharp}', 0)).toBeCloseTo(17.3239);
     });
   });
+
+  describe('getReferenceName()', () => {
+    test('returns the name of the reference note', () => {
+      const equal = new Temperament(equalTemperament);
+
+      expect(equal.getReferenceName()).toBe('A');
+    });
+  });
+
+  describe('getReferenceOctave()', () => {
+    test('returns the octave number of the reference note', () => {
+      const equal = new Temperament(equalTemperament);
+
+      expect(equal.getReferenceOctave()).toBe(4);
+    });
+  });
+
+  describe('getReferencePitch()', () => {
+    test('returns the pitch of the reference note', () => {
+      const equal = new Temperament(equalTemperament);
+
+      expect(equal.getReferencePitch()).toBe(440);
+    });
+  });
+
+  describe('setReferencePitch()', () => {
+    test('sets the pitch of the reference note', () => {
+      const equal = new Temperament(equalTemperament);
+
+      equal.setReferencePitch(441);
+      expect(equal.getReferencePitch()).toBe(441);
+    });
+  });
 });
 
 describe('prettifyNoteName()', () => {
   test('returns a string with element sequences replaced', () => {
-    expect(prettifyNoteName('A{sharp}')).toBe('A♯');
-    expect(prettifyNoteName('D{flat}')).toBe('D♭');
+    expect(Temperament.prettifyNoteName('A{sharp}')).toBe('A♯');
+    expect(Temperament.prettifyNoteName('D{flat}')).toBe('D♭');
     // Yes, I know this isn't a real note :)
-    expect(prettifyNoteName('C{sharp}{flat}')).toBe('C♯♭');
+    expect(Temperament.prettifyNoteName('C{sharp}{flat}')).toBe('C♯♭');
   });
 
   test('reprints unknown element sequences in output without curly braces', () => {
-    expect(prettifyNoteName('{unknown}')).toBe('unknown');
-    expect(prettifyNoteName('hi {there}, user')).toBe('hi there, user');
+    expect(Temperament.prettifyNoteName('{unknown}')).toBe('unknown');
+    expect(Temperament.prettifyNoteName('hi {there}, user')).toBe(
+      'hi there, user'
+    );
   });
 
   test('reprints unclosed element sequences in output without curly braces', () => {
-    expect(prettifyNoteName('{unclosed')).toBe('unclosed');
-    expect(prettifyNoteName('what is {this thing')).toBe('what is this thing');
+    expect(Temperament.prettifyNoteName('{unclosed')).toBe('unclosed');
+    expect(Temperament.prettifyNoteName('what is {this thing')).toBe(
+      'what is this thing'
+    );
   });
 });
 
