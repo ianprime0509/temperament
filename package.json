@@ -9,8 +9,10 @@
     "src"
   ],
   "scripts": {
+    "eslint": "eslint src",
     "prepare": "rollup -c",
-    "test": "jest"
+    "test-only": "jest",
+    "test": "run-p eslint test-only"
   },
   "repository": {
     "type": "git",
@@ -27,7 +29,10 @@
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-env": "^1.6.1",
     "eslint": "^4.18.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.0",
     "jest": "^22.4.2",
+    "npm-run-all": "^4.1.2",
     "prettier": "^1.10.2",
     "rollup": "^0.56.3",
     "rollup-plugin-babel": "^3.0.3",
