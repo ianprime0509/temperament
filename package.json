@@ -18,12 +18,24 @@
     "type": "git",
     "url": "git+https://github.com/ianprime0509/temperament.git"
   },
+  "keywords": [
+    "temperament",
+    "music",
+    "theory",
+    "pitch"
+  ],
   "author": "Ian Johnson <ianprime0509@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ianprime0509/temperament/issues"
   },
   "homepage": "https://github.com/ianprime0509/temperament",
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "dependencies": {
+    "ajv": "^6.2.0"
+  },
   "devDependencies": {
     "babel-core": "6",
     "babel-plugin-external-helpers": "^6.22.0",
@@ -37,8 +49,5 @@
     "rollup": "^0.56.3",
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-json": "^2.3.0"
-  },
-  "dependencies": {
-    "ajv": "^6.2.0"
   }
 }
