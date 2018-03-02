@@ -35,6 +35,8 @@ accepts a single argument, an object in the format described in the
 import { Temperament } from 'temperament';
 
 let equalTemperament = new Temperament(equalTemperamentData);
+equalTemperament.setReferencePitch(441);
+console.log(equalTemperament.getPitch('A', 4)); // Prints `441`.
 ```
 
 In the above example, `equalTemperamentData` could be the object corresponding
