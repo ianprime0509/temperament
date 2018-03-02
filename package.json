@@ -9,8 +9,10 @@
     "src"
   ],
   "scripts": {
+    "build": "rollup -c",
     "eslint": "eslint src",
-    "prepare": "rollup -c",
+    "jsdoc": "jsdoc2md -f src/index.js > API.md",
+    "prepare": "run-p build jsdoc",
     "test-only": "jest",
     "test": "run-p eslint test-only"
   },
@@ -44,6 +46,7 @@
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-prettier": "^2.6.0",
     "jest": "^22.4.2",
+    "jsdoc-to-markdown": "^4.0.1",
     "npm-run-all": "^4.1.2",
     "prettier": "^1.10.2",
     "rollup": "^0.56.3",
