@@ -8,6 +8,10 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.0.0] - 2018-03-02
+### Added
+- API documentation in `API.md` (generated from JSDoc comments).
+
 ## [1.0.0-alpha.1] - 2018-02-27
 ### Added
 - `source` property in temperament data.
