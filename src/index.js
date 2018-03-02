@@ -5,9 +5,6 @@
  * license can be found in the LICENSE file in the project root, or at
  * https://opensource.org/licenses/MIT.
  */
-/**
- * @file Internal temperament definition and logic.
- */
 import Ajv from 'ajv';
 
 import schema from './schema.json';
@@ -20,6 +17,18 @@ export const OCTAVE_SIZE = 1200;
 
 /**
  * Contains a complete description of a musical temperament.
+ *
+ * Most interaction with a `Temperament` should be through its public methods,
+ * documented below.  However, "metadata" properties (such as the name of the
+ * temperament) are available for direct access, since changing them has no
+ * effect on the internal structure of the temperament.  These metadata
+ * properties correspond directly to properties in the input data, and are
+ * documented below.  Please note that a metadata property may be `undefined`
+ * if it was not defined in the input data.
+ *
+ * @property {string} name - The name of the temperament.
+ * @property {string} description - A short description of the temperament.
+ * @property {string} source - The source of the temperament data (e.g. a URL).
  */
 export class Temperament {
   /**
@@ -33,6 +42,9 @@ export class Temperament {
    * nest, and an unclosed or unrecognized element sequence will be kept
    * verbatim in the output, but without the curly braces.  Currently, there is
    * no way to escape a curly brace, but this may change later.
+   *
+   * @param {string} name - The note name to prettify.
+   * @return {string} The "pretty" note name, with special characters inserted.
    */
   static prettifyNoteName(name) {
     const replacements = new Map([['sharp', '♯'], ['flat', '♭']]);
@@ -66,7 +78,14 @@ export class Temperament {
     return pretty;
   }
 
-  /** Construct a new Temperament from the given description. */
+  /**
+   * Create a new temperament.
+   *
+   * @param {object} data - The temperament data, in the format described by
+   * the README.
+   * @throws {TypeError} The input data must conform to the temperament schema.
+   * @throws {Error} The given note data must be complete and unambiguous.
+   */
   constructor(data) {
     if (!validate(data)) {
       throw new TypeError(
@@ -94,8 +113,9 @@ export class Temperament {
    * Return the closest note to the given pitch (in Hz), along with the pitch
    * difference (in cents).
    *
-   * The returned value will be an array with the note name as its first
-   * element and the pitch difference as the second.
+   * @param {number} pitch - The pitch of the note to identify (in Hz).
+   * @return {Array} A tuple containing the note name as its first element and
+   * the offset (in cents) from that note as its second element.
    */
   getNoteNameFromPitch(pitch) {
     // We need to get the offset in cents from the reference pitch so we can
@@ -146,8 +166,8 @@ export class Temperament {
   /**
    * Return an array of the note names defined in the temperament.
    *
-   * The returned array will be sorted in increasing order of pitch, starting
-   * with the octave base.
+   * @return {string[]} The note names, sorted in increasing order of pitch
+   * starting with the octave base.
    */
   getNoteNames() {
     // We need to make a copy of the array so that the internal one doesn't get
@@ -155,7 +175,11 @@ export class Temperament {
     return [...this._noteNames];
   }
 
-  /** Return the name of the octave base note. */
+  /**
+   * Return the name of the octave base note.
+   *
+   * @return {string} The name of the octave base note.
+   */
   getOctaveBaseName() {
     return this._octaveBaseName;
   }
@@ -163,6 +187,10 @@ export class Temperament {
   /**
    * Return an array with octave numbers in order, forming a range with the
    * given radius around the reference octave.
+   *
+   * @param {number} radius - The number of octaves on either end of the
+   * reference octave to include.
+   * @return {number[]} A range of octave numbers.
    */
   getOctaveRange(radius) {
     const start = this._referenceOctave - radius;
@@ -176,7 +204,13 @@ export class Temperament {
     return octaves;
   }
 
-  /** Return the offset of the given note (relative to the reference pitch). */
+  /**
+   * Return the offset of the given note.
+   *
+   * @param {string} note - The name of the note.
+   * @param {number} octave - The octave number of the note.
+   * @return {number} The offset (in cents), relative to the reference pitch.
+   */
   getOffset(note, octave) {
     const offset = this._offsets.get(note);
     return offset !== undefined
@@ -184,29 +218,51 @@ export class Temperament {
       : undefined;
   }
 
-  /** Return the pitch (in Hz) of the given note. */
+  /**
+   * Return the pitch of the given note.
+   *
+   * @param {string} note - The name of the note.
+   * @param {number} octave - The octave number of the note.
+   * @return {number} The pitch (in Hz).
+   */
   getPitch(note, octave) {
     return (
       this._referencePitch * 2 ** (this.getOffset(note, octave) / OCTAVE_SIZE)
     );
   }
 
-  /** Return the name of the reference note. */
+  /**
+   * Return the name of the reference note.
+   *
+   * @return {string}
+   */
   getReferenceName() {
     return this._referenceName;
   }
 
-  /** Return the octave number of the reference note. */
+  /**
+   * Return the octave number of the reference note.
+   *
+   * @return {number}
+   */
   getReferenceOctave() {
     return this._referenceOctave;
   }
 
-  /** Return the reference pitch (in Hz). */
+  /**
+   * Return the reference pitch.
+   *
+   * @return {number} The reference pitch, in Hz.
+   */
   getReferencePitch() {
     return this._referencePitch;
   }
 
-  /** Set the reference pitch (in Hz). */
+  /**
+   * Set the reference pitch.
+   *
+   * @param {number} pitch - The reference pitch (in Hz).
+   */
   setReferencePitch(pitch) {
     this._referencePitch = pitch;
   }
@@ -216,6 +272,9 @@ export class Temperament {
    *
    * This is a convenience method to make the constructor shorter and more
    * readable.
+   *
+   * @private
+   * @param {object} notes - The `notes` property of the temperament input.
    */
   _computeOffsets(notes) {
     this._offsets = new Map([[this._referenceName, 0]]);
@@ -301,6 +360,10 @@ export class Temperament {
   /**
    * Attempt to define the offset of the given note.
    *
+   * @private
+   * @param {string} note - The name of the note to define.
+   * @param {number} offset - The offset (in cents) of the note from the
+   * reference pitch.
    * @throws Will throw an error if the given offset conflicts with an existing
    * one.
    */
