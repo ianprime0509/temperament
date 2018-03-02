@@ -21,7 +21,7 @@ $ yarn add temperament
 or NPM:
 
 ```shell
-$ npm install --save-dev temperament
+$ npm install --save temperament
 ```
 
 ## Usage
@@ -37,6 +37,9 @@ import { Temperament } from 'temperament';
 let equalTemperament = new Temperament(equalTemperamentData);
 ```
 
+In the above example, `equalTemperamentData` could be the object corresponding
+to the sample given in the [basic usage section](#basic-usage).
+
 For now, see the source code for information on the various methods available,
 since they might change and I don't want to constantly rewrite unstable
 documentation.
@@ -44,8 +47,8 @@ documentation.
 ## Temperament format
 
 The format of a temperament is specified by the [JSON
-schema](http://json-schema.org/) located in `src/schema.json`; each item in the
-schema is annotated with a `description` key that explains its purpose.
+schema](http://json-schema.org/) located in `src/schema.json`.  Each item in
+the schema is annotated with a `description` key that explains its purpose.
 
 ### Basic usage
 
@@ -76,7 +79,7 @@ Here is an example of a temperament file describing equal temperament:
 ```
 
 All the keys used in the above example are required.  The first key (and the
-one whose purpose is most obvious) is the `name`; each temperament must have a
+one whose purpose is most obvious) is the `name`: each temperament must have a
 name which identifies it for use in other applications.
 
 The next three keys describe the reference note.  The reference note is
@@ -130,6 +133,18 @@ and `{flat}` (corresponding to ♭) are recognized.  For example, the note name
 `B{flat}` used in the sample above will be displayed as B♭.  Of course, it is
 also possible to simply type the Unicode characters directly into the
 temperament file.
+
+### Metadata
+
+In addition to the required `name` key, there are several other keys which can
+be used to add metadata to a temperament.  Currently, the supported keys are as
+follows:
+
+- `description`: a longer description of a temperament.  It is recommended to
+  restrict this to a single sentence, with a period at the end.
+- `source`: a description of the source from which the temperament data was
+  obtained.  For example, this could be a URL pointing to the Wikipedia page of
+  your temperament or another page that describes it.
 
 ## License
 
