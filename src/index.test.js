@@ -9,12 +9,14 @@ import { OCTAVE_SIZE, Temperament } from '.';
 
 import equalTemperament from '../temperaments/equal.json';
 import quarterCommaMeantone from '../temperaments/quarterCommaMeantone.json';
+import pythagoreanD from '../temperaments/pythagoreanD.json';
 
 describe('Temperament', () => {
   describe('constructor', () => {
     test('does not throw an error on valid inputs', () => {
       expect(() => new Temperament(equalTemperament)).not.toThrow();
       expect(() => new Temperament(quarterCommaMeantone)).not.toThrow();
+      expect(() => new Temperament(pythagoreanD)).not.toThrow();
     });
 
     test('throws an error when the input format is invalid', () => {
