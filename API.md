@@ -48,9 +48,9 @@ if it was not defined in the input data.
     * [new exports.Temperament(data)](#new_Temperament_new)
     * _instance_
         * [.getNoteNameFromPitch(pitch)](#Temperament+getNoteNameFromPitch) ⇒ <code>Array</code>
-        * [.getNoteNames()](#Temperament+getNoteNames) ⇒ <code>Array.&lt;string&gt;</code>
+        * [.getNoteNames()](#Temperament+getNoteNames) ⇒ <code>[ &#x27;Array&#x27; ].&lt;string&gt;</code>
         * [.getOctaveBaseName()](#Temperament+getOctaveBaseName) ⇒ <code>string</code>
-        * [.getOctaveRange(radius)](#Temperament+getOctaveRange) ⇒ <code>Array.&lt;number&gt;</code>
+        * [.getOctaveRange(radius)](#Temperament+getOctaveRange) ⇒ <code>[ &#x27;Array&#x27; ].&lt;number&gt;</code>
         * [.getOffset(note, octave)](#Temperament+getOffset) ⇒ <code>number</code>
         * [.getPitch(note, octave)](#Temperament+getPitch) ⇒ <code>number</code>
         * [.getReferenceName()](#Temperament+getReferenceName) ⇒ <code>string</code>
@@ -86,11 +86,11 @@ the offset (in cents) from that note as its second element.
 
 <a name="Temperament+getNoteNames"></a>
 
-### temperament.getNoteNames() ⇒ <code>Array.&lt;string&gt;</code>
+### temperament.getNoteNames() ⇒ <code>[ &#x27;Array&#x27; ].&lt;string&gt;</code>
 Return an array of the note names defined in the temperament.
 
 **Kind**: instance method of [<code>Temperament</code>](#Temperament)  
-**Returns**: <code>Array.&lt;string&gt;</code> - The note names, sorted in increasing order of pitch
+**Returns**: <code>[ &#x27;Array&#x27; ].&lt;string&gt;</code> - The note names, sorted in increasing order of pitch
 starting with the octave base.  
 <a name="Temperament+getOctaveBaseName"></a>
 
@@ -101,12 +101,12 @@ Return the name of the octave base note.
 **Returns**: <code>string</code> - The name of the octave base note.  
 <a name="Temperament+getOctaveRange"></a>
 
-### temperament.getOctaveRange(radius) ⇒ <code>Array.&lt;number&gt;</code>
+### temperament.getOctaveRange(radius) ⇒ <code>[ &#x27;Array&#x27; ].&lt;number&gt;</code>
 Return an array with octave numbers in order, forming a range with the
 given radius around the reference octave.
 
 **Kind**: instance method of [<code>Temperament</code>](#Temperament)  
-**Returns**: <code>Array.&lt;number&gt;</code> - A range of octave numbers.  
+**Returns**: <code>[ &#x27;Array&#x27; ].&lt;number&gt;</code> - A range of octave numbers.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -191,7 +191,7 @@ no way to escape a curly brace, but this may change later.
 
 <a name="OCTAVE_SIZE"></a>
 
-## OCTAVE_SIZE
+## OCTAVE\_SIZE
 The size of an octave in cents.
 
 **Kind**: global constant  

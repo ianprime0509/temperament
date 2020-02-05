@@ -47,7 +47,10 @@ export class Temperament {
    * @return {string} The "pretty" note name, with special characters inserted.
    */
   static prettifyNoteName(name) {
-    const replacements = new Map([['sharp', '♯'], ['flat', '♭']]);
+    const replacements = new Map([
+      ['sharp', '♯'],
+      ['flat', '♭'],
+    ]);
 
     let pretty = '';
     let element = '';
@@ -123,7 +126,7 @@ export class Temperament {
     // octave of the octave base note.
     const baseOffset = this._offsets.get(this._octaveBaseName);
     let offset = Math.log2(pitch / this._referencePitch) * OCTAVE_SIZE;
-    offset = (offset - baseOffset) % OCTAVE_SIZE + baseOffset;
+    offset = ((offset - baseOffset) % OCTAVE_SIZE) + baseOffset;
     if (offset < baseOffset) {
       offset += OCTAVE_SIZE;
     }
@@ -294,7 +297,7 @@ export class Temperament {
       // currentName: [name, offset]
       //
       // in the notes object.
-      if (notes.hasOwnProperty(currentName)) {
+      if (Object.prototype.hasOwnProperty.call(notes, currentName)) {
         let [name, offset] = notes[currentName];
         // We can now use the note on the right-hand side for deduction,
         // provided it hasn't already been used (which would result in an

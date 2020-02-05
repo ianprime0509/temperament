@@ -10,6 +10,9 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 ### Added
 - D-based Pythagorean temperament example
 
+### Changed
+- Updated dependencies to latest versions
+
 ## [1.0.0] - 2018-03-02
 ### Added
 - API documentation in `API.md` (generated from JSDoc comments).
