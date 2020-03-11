@@ -12,16 +12,16 @@ made it into its own module.
 
 ## Installation
 
-You can use Yarn:
-
-```shell
-$ yarn add temperament
-```
-
-or NPM:
+You can use NPM:
 
 ```shell
 $ npm install --save temperament
+```
+
+or Yarn:
+
+```shell
+$ yarn add temperament
 ```
 
 ## Usage
