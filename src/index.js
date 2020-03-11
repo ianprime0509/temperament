@@ -5,6 +5,7 @@
  * license can be found in the LICENSE file in the project root, or at
  * https://opensource.org/licenses/MIT.
  */
+/** @module temperament */
 import Ajv from 'ajv';
 
 import schema from './schema.json';
