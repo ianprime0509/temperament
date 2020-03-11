@@ -8,6 +8,10 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.2.0] - 2020-03-10
+### Changed
+- Removed dependency on `@babel/polyfill`
+
 ## [1.1.0] - 2020-03-10
 ### Added
 - D-based Pythagorean temperament example
