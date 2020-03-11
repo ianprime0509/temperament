@@ -1,7 +1,6 @@
 # temperament
 
 [![npm](https://img.shields.io/npm/v/temperament.svg)](https://www.npmjs.com/package/temperament)
-[![Travis](https://img.shields.io/travis/ianprime0509/temperament.svg)](https://travis-ci.org/ianprime0509/temperament)
 
 This is a library for working with [musical
 temperaments](https://en.wikipedia.org/wiki/Musical_temperament) in JavaScript.
