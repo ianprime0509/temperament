@@ -317,8 +317,8 @@ export class Temperament {
       //
       // name: [currentName, offset]
       Object.keys(notes)
-        .filter(name => notes[name][0] === currentName)
-        .forEach(name => {
+        .filter((name) => notes[name][0] === currentName)
+        .forEach((name) => {
           let offset = notes[name][1];
 
           if (name !== currentName && !this._offsets.has(name)) {
@@ -331,7 +331,7 @@ export class Temperament {
     }
 
     // Make sure we have offset data for all notes.
-    Object.keys(notes).forEach(name => {
+    Object.keys(notes).forEach((name) => {
       if (!this._offsets.has(name)) {
         throw new Error(`not able to determine the pitch of '${name}'`);
       }

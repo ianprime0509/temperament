@@ -1,7 +1,6 @@
 {
   "title": "Temperament",
-  "description":
-    "A complete description of a musical temperament with additional metadata.",
+  "description": "A complete description of a musical temperament with additional metadata.",
   "type": "object",
   "required": [
     "name",
@@ -46,8 +45,7 @@
       "type": "object",
       "minProperties": 1,
       "additionalProperties": {
-        "description":
-          "A description of the note, as an offset from another note.",
+        "description": "A description of the note, as an offset from another note.",
         "type": "array",
         "items": [
           {
