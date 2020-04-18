@@ -23,7 +23,6 @@
       "description": "The source from which the temperament data was obtained.",
       "type": "string"
     },
-
     "octaveBaseName": {
       "description": "The name of the base note of the octave.",
       "type": "string"
@@ -47,6 +46,8 @@
       "additionalProperties": {
         "description": "A description of the note, as an offset from another note.",
         "type": "array",
+        "minItems": 2,
+        "maxItems": 2,
         "items": [
           {
             "description": "The base note from which to offset.",

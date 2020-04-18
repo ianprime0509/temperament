@@ -5,11 +5,28 @@
  * license can be found in the LICENSE file in the project root, or at
  * https://opensource.org/licenses/MIT.
  */
-import { OCTAVE_SIZE, Temperament } from '.';
+/* eslint-env jest */
 
-import equalTemperament from '../temperaments/equal.json';
-import quarterCommaMeantone from '../temperaments/quarterCommaMeantone.json';
-import pythagoreanD from '../temperaments/pythagoreanD.json';
+import { OCTAVE_SIZE, Temperament, prettifyNoteName } from '.';
+
+import { Temperament as TemperamentData } from './schema';
+
+import equalTemperamentJson from '../temperaments/equal.json';
+import quarterCommaMeantoneJson from '../temperaments/quarterCommaMeantone.json';
+import pythagoreanDJson from '../temperaments/pythagoreanD.json';
+
+const equalTemperament = (equalTemperamentJson as unknown) as TemperamentData;
+const quarterCommaMeantone = (quarterCommaMeantoneJson as unknown) as TemperamentData;
+const pythagoreanD = (pythagoreanDJson as unknown) as TemperamentData;
+
+/**
+ * Adds the given number of cents to the given pitch.
+ *
+ * @returns the resulting pitch, in Hz
+ */
+function addCents(pitch: number, cents: number): number {
+  return pitch * 2 ** (cents / OCTAVE_SIZE);
+}
 
 describe('Temperament', () => {
   describe('constructor', () => {
@@ -20,13 +37,16 @@ describe('Temperament', () => {
     });
 
     test('throws an error when the input format is invalid', () => {
-      expect(() => new Temperament({ name: 'No notes' })).toThrow(
-        'incorrect temperament format'
-      );
+      expect(
+        () =>
+          new Temperament(({
+            name: 'No notes',
+          } as unknown) as TemperamentData)
+      ).toThrow('Incorrect temperament format');
 
       expect(
         () =>
-          new Temperament({
+          new Temperament(({
             name: 'Invalid notes',
             referenceName: 'A',
             referencePitch: 440,
@@ -36,8 +56,8 @@ describe('Temperament', () => {
               A: 'A',
               C: 'C',
             },
-          })
-      ).toThrow('incorrect temperament format');
+          } as unknown) as TemperamentData)
+      ).toThrow('Incorrect temperament format');
 
       expect(
         () =>
@@ -49,7 +69,7 @@ describe('Temperament', () => {
             octaveBaseName: 'C',
             notes: {},
           })
-      ).toThrow('incorrect temperament format');
+      ).toThrow('Incorrect temperament format');
     });
 
     test('throws an error when given conflicting note definitions', () => {
@@ -66,7 +86,7 @@ describe('Temperament', () => {
               C: ['A', 500],
             },
           })
-      ).toThrow('conflicting definition');
+      ).toThrow('Conflicting definition');
     });
 
     test('throws an error when not enough note information is given', () => {
@@ -84,7 +104,7 @@ describe('Temperament', () => {
               C: ['A', 500],
             },
           })
-      ).toThrow('not able to determine the pitch');
+      ).toThrow('Not able to determine the pitch');
     });
   });
 
@@ -149,10 +169,10 @@ describe('Temperament', () => {
     });
   });
 
-  describe('getNoteNames()', () => {
+  describe('get noteNames()', () => {
     test('returns an ordered array of equal temperament note names', () => {
       const equal = new Temperament(equalTemperament);
-      expect(equal.getNoteNames()).toEqual([
+      expect(equal.noteNames).toEqual([
         'C',
         'C{sharp}',
         'D',
@@ -170,7 +190,7 @@ describe('Temperament', () => {
 
     test('returns an ordered array of quarter-comma meantone note names', () => {
       const qcm = new Temperament(quarterCommaMeantone);
-      expect(qcm.getNoteNames()).toEqual([
+      expect(qcm.noteNames).toEqual([
         'C',
         'C{sharp}',
         'D',
@@ -218,11 +238,15 @@ describe('Temperament', () => {
       expect(qcm.getOffset('C', 5)).toBeCloseTo(310.2);
     });
 
-    test('returns undefined for non-existent notes', () => {
+    test('throws an error for non-existent notes', () => {
       const equal = new Temperament(equalTemperament);
 
-      expect(equal.getOffset('Q{sharp}', 4)).toBeUndefined();
-      expect(equal.getOffset('AZ', 5)).toBeUndefined();
+      expect(() => equal.getOffset('Q{sharp}', 4)).toThrow(
+        "Note 'Q{sharp}' is not defined"
+      );
+      expect(() => equal.getOffset('AZ', 5)).toThrow(
+        "Note 'AZ' is not defined"
+      );
     });
   });
 
@@ -243,68 +267,55 @@ describe('Temperament', () => {
     });
   });
 
-  describe('getReferenceName()', () => {
+  describe('get referenceName()', () => {
     test('returns the name of the reference note', () => {
       const equal = new Temperament(equalTemperament);
 
-      expect(equal.getReferenceName()).toBe('A');
+      expect(equal.referenceName).toBe('A');
     });
   });
 
-  describe('getReferenceOctave()', () => {
+  describe('get referenceOctave()', () => {
     test('returns the octave number of the reference note', () => {
       const equal = new Temperament(equalTemperament);
 
-      expect(equal.getReferenceOctave()).toBe(4);
+      expect(equal.referenceOctave).toBe(4);
     });
   });
 
-  describe('getReferencePitch()', () => {
+  describe('get referencePitch()', () => {
     test('returns the pitch of the reference note', () => {
       const equal = new Temperament(equalTemperament);
 
-      expect(equal.getReferencePitch()).toBe(440);
+      expect(equal.referencePitch).toBe(440);
     });
   });
 
-  describe('setReferencePitch()', () => {
+  describe('set referencePitch()', () => {
     test('sets the pitch of the reference note', () => {
       const equal = new Temperament(equalTemperament);
 
-      equal.setReferencePitch(441);
-      expect(equal.getReferencePitch()).toBe(441);
+      equal.referencePitch = 441;
+      expect(equal.referencePitch).toBe(441);
     });
   });
 });
 
 describe('prettifyNoteName()', () => {
   test('returns a string with element sequences replaced', () => {
-    expect(Temperament.prettifyNoteName('A{sharp}')).toBe('A♯');
-    expect(Temperament.prettifyNoteName('D{flat}')).toBe('D♭');
+    expect(prettifyNoteName('A{sharp}')).toBe('A♯');
+    expect(prettifyNoteName('D{flat}')).toBe('D♭');
     // Yes, I know this isn't a real note :)
-    expect(Temperament.prettifyNoteName('C{sharp}{flat}')).toBe('C♯♭');
+    expect(prettifyNoteName('C{sharp}{flat}')).toBe('C♯♭');
   });
 
   test('reprints unknown element sequences in output without curly braces', () => {
-    expect(Temperament.prettifyNoteName('{unknown}')).toBe('unknown');
-    expect(Temperament.prettifyNoteName('hi {there}, user')).toBe(
-      'hi there, user'
-    );
+    expect(prettifyNoteName('{unknown}')).toBe('unknown');
+    expect(prettifyNoteName('hi {there}, user')).toBe('hi there, user');
   });
 
   test('reprints unclosed element sequences in output without curly braces', () => {
-    expect(Temperament.prettifyNoteName('{unclosed')).toBe('unclosed');
-    expect(Temperament.prettifyNoteName('what is {this thing')).toBe(
-      'what is this thing'
-    );
+    expect(prettifyNoteName('{unclosed')).toBe('unclosed');
+    expect(prettifyNoteName('what is {this thing')).toBe('what is this thing');
   });
 });
-
-/**
- * A helper function to add the given number of cents to the given pitch.
- *
- * @return The resulting pitch, in Hz.
- */
-function addCents(pitch, cents) {
-  return pitch * 2 ** (cents / OCTAVE_SIZE);
-}

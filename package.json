@@ -1,6 +1,6 @@
 {
   "name": "temperament",
-  "version": "1.1.1",
+  "version": "2.0.0-alpha.0",
   "description": "A library for working with musical temperaments.",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -9,12 +9,15 @@
     "src"
   ],
   "scripts": {
-    "build": "rollup -c",
-    "eslint": "eslint src",
-    "jsdoc": "jsdoc2md -f src/index.js > API.md",
-    "prepare": "run-p build jsdoc",
+    "build": "run-s gen-schema-type compile",
+    "check-types": "tsc -p tsconfig.check.json",
+    "compile": "rollup -c",
+    "eslint": "eslint --ext .ts,.js src",
+    "gen-declarations": "tsc -p tsconfig.declarations.json",
+    "gen-schema-type": "json2ts src/schema.json src/schema.d.ts",
+    "prepare": "run-p build gen-declarations",
     "test-only": "jest",
-    "test": "run-p eslint test-only"
+    "test": "run-p check-types eslint test-only"
   },
   "repository": {
     "type": "git",
@@ -40,17 +43,24 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.9.5",
     "@babel/preset-env": "^7.9.5",
+    "@babel/preset-typescript": "^7.9.0",
     "@rollup/plugin-json": "^4.0.2",
+    "@types/jest": "^25.2.1",
+    "@typescript-eslint/eslint-plugin": "^2.28.0",
+    "@typescript-eslint/parser": "^2.28.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-tsdoc": "^0.2.4",
     "jest": "^25.3.0",
-    "jsdoc-to-markdown": "^5.0.3",
+    "json-schema-to-typescript": "^8.2.0",
     "npm-run-all": "^4.1.5",
     "prettier": "2.0.4",
     "rollup": "^2.6.1",
-    "rollup-plugin-babel": "^4.4.0"
+    "rollup-plugin-babel": "^4.4.0",
+    "typescript": "^3.8.3"
   }
 }
