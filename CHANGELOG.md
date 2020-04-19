@@ -8,6 +8,12 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.0.0-alpha.1] - 2020-04-19
+
+### Fixed
+
+- Added `types` property to `package.json` so TypeScript can find types
+
 ## [2.0.0-alpha.0] - 2020-04-19
 
 ### Added
