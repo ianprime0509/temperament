@@ -4,6 +4,7 @@
   "description": "A library for working with musical temperaments.",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
+  "types": "lib/index.d.ts",
   "files": [
     "lib",
     "src"
