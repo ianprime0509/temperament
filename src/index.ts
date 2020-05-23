@@ -6,11 +6,11 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import Ajv from 'ajv';
+import Ajv from "ajv";
 
-import { Temperament as TemperamentData } from './schema';
+import { Temperament as TemperamentData } from "./schema";
 
-import schema from './schema.json';
+import schema from "./schema.json";
 
 const ajv = new Ajv();
 const validate = ajv.compile(schema);
@@ -111,7 +111,7 @@ function computeOffsets(temperament: TemperamentData): Map<string, number> {
   // reference note, and within one octave of it.
   const originalOctaveBaseOffset = offsets.get(temperament.octaveBaseName);
   if (originalOctaveBaseOffset === undefined) {
-    throw new Error('Octave base not defined as a note');
+    throw new Error("Octave base not defined as a note");
   }
   const octaveBaseOffset =
     originalOctaveBaseOffset > 0
@@ -242,7 +242,7 @@ export class Temperament {
    * @throws {@link Error} if `pitch` is not positive
    */
   set referencePitch(pitch: number) {
-    if (pitch <= 0) throw new Error('Pitch must be positive');
+    if (pitch <= 0) throw new Error("Pitch must be positive");
 
     this._referencePitch = pitch;
   }
@@ -257,7 +257,7 @@ export class Temperament {
    * @throws {@link Error} if `pitch` is not positive
    */
   getNoteNameFromPitch(pitch: number): [string, number] {
-    if (pitch <= 0) throw new Error('Pitch must be positive');
+    if (pitch <= 0) throw new Error("Pitch must be positive");
 
     // We need to get the offset in cents from the reference pitch so we can
     // compare it. The offset needs to be normalized so that it's within an
@@ -322,7 +322,7 @@ export class Temperament {
    * @throws {@link Error} if `radius` is negative
    */
   getOctaveRange(radius: number): number[] {
-    if (radius < 0) throw new Error('Radius must not be negative');
+    if (radius < 0) throw new Error("Radius must not be negative");
 
     const start = this._referenceOctave - radius;
     const end = this._referenceOctave + radius;
