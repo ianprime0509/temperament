@@ -29,7 +29,8 @@
     },
     "referencePitch": {
       "description": "The frequency (in Hz) of the reference pitch.",
-      "type": "number"
+      "type": "number",
+      "exclusiveMinimum": 0
     },
     "referenceName": {
       "description": "The note name of the reference pitch.",

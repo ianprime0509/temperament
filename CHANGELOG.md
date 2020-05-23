@@ -8,6 +8,10 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- More validations on function inputs (e.g. pitches must be positive numbers)
+
 ### Removed
 
 - `prettifyNoteName` function

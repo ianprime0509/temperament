@@ -239,8 +239,11 @@ export class Temperament {
    * Sets the reference pitch.
    *
    * @param pitch - the reference pitch (in Hz)
+   * @throws {@link Error} if `pitch` is not positive
    */
   set referencePitch(pitch: number) {
+    if (pitch <= 0) throw new Error('Pitch must be positive');
+
     this._referencePitch = pitch;
   }
 
@@ -251,8 +254,11 @@ export class Temperament {
    * @param pitch - the pitch of the note to identify (in Hz)
    * @returns a tuple containing the note name as its first element and the
    * offset (in cents) from that note as its second element
+   * @throws {@link Error} if `pitch` is not positive
    */
   getNoteNameFromPitch(pitch: number): [string, number] {
+    if (pitch <= 0) throw new Error('Pitch must be positive');
+
     // We need to get the offset in cents from the reference pitch so we can
     // compare it. The offset needs to be normalized so that it's within an
     // octave of the octave base note.
@@ -311,10 +317,13 @@ export class Temperament {
    * given radius around the reference octave.
    *
    * @param radius - the number of octaves on either end of the reference octave
-   * to include
+   * to include. Must be non-negative.
    * @returns a range of octave numbers
+   * @throws {@link Error} if `radius` is negative
    */
   getOctaveRange(radius: number): number[] {
+    if (radius < 0) throw new Error('Radius must not be negative');
+
     const start = this._referenceOctave - radius;
     const end = this._referenceOctave + radius;
     const octaves = [];

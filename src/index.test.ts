@@ -70,6 +70,20 @@ describe('Temperament', () => {
             notes: {},
           })
       ).toThrow('Incorrect temperament format');
+
+      expect(
+        () =>
+          new Temperament({
+            name: 'Non-positive reference pitch',
+            referenceName: 'A',
+            referencePitch: 0,
+            referenceOctave: 4,
+            octaveBaseName: 'C',
+            notes: {
+              A: ['A', 0],
+            },
+          })
+      );
     });
 
     test('throws an error when given conflicting note definitions', () => {
@@ -105,59 +119,6 @@ describe('Temperament', () => {
             },
           })
       ).toThrow('Not able to determine the pitch');
-    });
-  });
-
-  describe('getNoteNameFromPitch()', () => {
-    test('identifies the closest note to a pitch', () => {
-      // For equal temperament, you can find the pre-calculated frequency of
-      // each note online, for example at
-      // https://en.wikipedia.org/wiki/Piano_key_frequencies
-      const equal = new Temperament(equalTemperament);
-
-      expect(equal.getNoteNameFromPitch(440)[0]).toBe('A');
-      expect(equal.getNoteNameFromPitch(880)[0]).toBe('A');
-      expect(equal.getNoteNameFromPitch(261.626)[0]).toBe('C');
-      expect(equal.getNoteNameFromPitch(addCents(261.626, 1))[0]).toBe('C');
-      expect(equal.getNoteNameFromPitch(addCents(311.127, -4))[0]).toBe('E♭');
-      expect(equal.getNoteNameFromPitch(addCents(1479.98, 20))[0]).toBe('F♯');
-      expect(equal.getNoteNameFromPitch(addCents(2637.02, -15))[0]).toBe('E');
-      expect(equal.getNoteNameFromPitch(addCents(34.6478, 7))[0]).toBe('C♯');
-      expect(equal.getNoteNameFromPitch(addCents(29.1352, -8))[0]).toBe('B♭');
-      expect(equal.getNoteNameFromPitch(addCents(493.883, 25))[0]).toBe('B');
-      expect(equal.getNoteNameFromPitch(addCents(523.251, -25))[0]).toBe('C');
-    });
-
-    test('identifies the offset (in cents) from the closest note to a pitch', () => {
-      const equal = new Temperament(equalTemperament);
-
-      expect(equal.getNoteNameFromPitch(440)[1]).toBeCloseTo(0);
-      expect(equal.getNoteNameFromPitch(880)[1]).toBeCloseTo(0);
-      expect(equal.getNoteNameFromPitch(261.626)[1]).toBeCloseTo(0);
-      expect(equal.getNoteNameFromPitch(addCents(261.626, 1))[1]).toBeCloseTo(
-        1
-      );
-      expect(equal.getNoteNameFromPitch(addCents(311.127, -4))[1]).toBeCloseTo(
-        -4
-      );
-      expect(equal.getNoteNameFromPitch(addCents(1479.98, 20))[1]).toBeCloseTo(
-        20
-      );
-      expect(equal.getNoteNameFromPitch(addCents(2637.02, -15))[1]).toBeCloseTo(
-        -15
-      );
-      expect(equal.getNoteNameFromPitch(addCents(34.6478, 7))[1]).toBeCloseTo(
-        7
-      );
-      expect(equal.getNoteNameFromPitch(addCents(29.1352, -8))[1]).toBeCloseTo(
-        -8
-      );
-      expect(equal.getNoteNameFromPitch(addCents(493.883, 25))[1]).toBeCloseTo(
-        25
-      );
-      expect(equal.getNoteNameFromPitch(addCents(523.251, -25))[1]).toBeCloseTo(
-        -25
-      );
     });
   });
 
@@ -230,6 +191,83 @@ describe('Temperament', () => {
       equal.referencePitch = 441;
       expect(equal.referencePitch).toBe(441);
     });
+
+    test('throws an error if the pitch is not positive', () => {
+      const equal = new Temperament(equalTemperament);
+
+      expect(() => (equal.referencePitch = 0)).toThrow(
+        'Pitch must be positive'
+      );
+      expect(equal.referencePitch).toBe(440);
+
+      expect(() => (equal.referencePitch = -2)).toThrow(
+        'Pitch must be positive'
+      );
+      expect(equal.referencePitch).toBe(440);
+    });
+  });
+
+  describe('getNoteNameFromPitch()', () => {
+    test('identifies the closest note to a pitch', () => {
+      // For equal temperament, you can find the pre-calculated frequency of
+      // each note online, for example at
+      // https://en.wikipedia.org/wiki/Piano_key_frequencies
+      const equal = new Temperament(equalTemperament);
+
+      expect(equal.getNoteNameFromPitch(440)[0]).toBe('A');
+      expect(equal.getNoteNameFromPitch(880)[0]).toBe('A');
+      expect(equal.getNoteNameFromPitch(261.626)[0]).toBe('C');
+      expect(equal.getNoteNameFromPitch(addCents(261.626, 1))[0]).toBe('C');
+      expect(equal.getNoteNameFromPitch(addCents(311.127, -4))[0]).toBe('E♭');
+      expect(equal.getNoteNameFromPitch(addCents(1479.98, 20))[0]).toBe('F♯');
+      expect(equal.getNoteNameFromPitch(addCents(2637.02, -15))[0]).toBe('E');
+      expect(equal.getNoteNameFromPitch(addCents(34.6478, 7))[0]).toBe('C♯');
+      expect(equal.getNoteNameFromPitch(addCents(29.1352, -8))[0]).toBe('B♭');
+      expect(equal.getNoteNameFromPitch(addCents(493.883, 25))[0]).toBe('B');
+      expect(equal.getNoteNameFromPitch(addCents(523.251, -25))[0]).toBe('C');
+    });
+
+    test('identifies the offset (in cents) from the closest note to a pitch', () => {
+      const equal = new Temperament(equalTemperament);
+
+      expect(equal.getNoteNameFromPitch(440)[1]).toBeCloseTo(0);
+      expect(equal.getNoteNameFromPitch(880)[1]).toBeCloseTo(0);
+      expect(equal.getNoteNameFromPitch(261.626)[1]).toBeCloseTo(0);
+      expect(equal.getNoteNameFromPitch(addCents(261.626, 1))[1]).toBeCloseTo(
+        1
+      );
+      expect(equal.getNoteNameFromPitch(addCents(311.127, -4))[1]).toBeCloseTo(
+        -4
+      );
+      expect(equal.getNoteNameFromPitch(addCents(1479.98, 20))[1]).toBeCloseTo(
+        20
+      );
+      expect(equal.getNoteNameFromPitch(addCents(2637.02, -15))[1]).toBeCloseTo(
+        -15
+      );
+      expect(equal.getNoteNameFromPitch(addCents(34.6478, 7))[1]).toBeCloseTo(
+        7
+      );
+      expect(equal.getNoteNameFromPitch(addCents(29.1352, -8))[1]).toBeCloseTo(
+        -8
+      );
+      expect(equal.getNoteNameFromPitch(addCents(493.883, 25))[1]).toBeCloseTo(
+        25
+      );
+      expect(equal.getNoteNameFromPitch(addCents(523.251, -25))[1]).toBeCloseTo(
+        -25
+      );
+    });
+
+    test('throws an error if the pitch is not positive', () => {
+      const equal = new Temperament(equalTemperament);
+      expect(() => equal.getNoteNameFromPitch(0)).toThrow(
+        'Pitch must be positive'
+      );
+      expect(() => equal.getNoteNameFromPitch(-5)).toThrow(
+        'Pitch must be positive'
+      );
+    });
   });
 
   describe('getOctaveRange()', () => {
@@ -237,6 +275,13 @@ describe('Temperament', () => {
       const equal = new Temperament(equalTemperament);
       expect(equal.getOctaveRange(2)).toEqual([2, 3, 4, 5, 6]);
       expect(equal.getOctaveRange(0)).toEqual([4]);
+    });
+
+    test('throws an error if the radius is negative', () => {
+      const equal = new Temperament(equalTemperament);
+      expect(() => equal.getOctaveRange(-1)).toThrow(
+        'Radius must not be negative'
+      );
     });
   });
 
