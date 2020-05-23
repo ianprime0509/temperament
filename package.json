@@ -10,13 +10,13 @@
     "src"
   ],
   "scripts": {
-    "build": "run-s gen-schema-type compile",
+    "build": "run-p compile gen-declarations",
     "check-types": "tsc -p tsconfig.check.json",
     "compile": "rollup -c",
     "eslint": "eslint --ext .ts,.js src",
     "gen-declarations": "tsc -p tsconfig.declarations.json",
     "gen-schema-type": "json2ts src/schema.json src/schema.d.ts",
-    "prepare": "run-p build gen-declarations",
+    "prepare": "run-s gen-schema-type build",
     "test-only": "jest",
     "test": "run-p check-types eslint test-only"
   },
