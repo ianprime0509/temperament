@@ -199,6 +199,39 @@ describe('Temperament', () => {
     });
   });
 
+  describe('get referenceName()', () => {
+    test('returns the name of the reference note', () => {
+      const equal = new Temperament(equalTemperament);
+
+      expect(equal.referenceName).toBe('A');
+    });
+  });
+
+  describe('get referenceOctave()', () => {
+    test('returns the octave number of the reference note', () => {
+      const equal = new Temperament(equalTemperament);
+
+      expect(equal.referenceOctave).toBe(4);
+    });
+  });
+
+  describe('get referencePitch()', () => {
+    test('returns the pitch of the reference note', () => {
+      const equal = new Temperament(equalTemperament);
+
+      expect(equal.referencePitch).toBe(440);
+    });
+  });
+
+  describe('set referencePitch()', () => {
+    test('sets the pitch of the reference note', () => {
+      const equal = new Temperament(equalTemperament);
+
+      equal.referencePitch = 441;
+      expect(equal.referencePitch).toBe(441);
+    });
+  });
+
   describe('getOctaveRange()', () => {
     test('returns a range of octaves around the reference octave', () => {
       const equal = new Temperament(equalTemperament);
@@ -256,39 +289,6 @@ describe('Temperament', () => {
       expect(equal.getPitch('B', 7)).toBeCloseTo(3951.07);
       expect(equal.getPitch('B♭', 2)).toBeCloseTo(116.541);
       expect(equal.getPitch('C♯', 0)).toBeCloseTo(17.3239);
-    });
-  });
-
-  describe('get referenceName()', () => {
-    test('returns the name of the reference note', () => {
-      const equal = new Temperament(equalTemperament);
-
-      expect(equal.referenceName).toBe('A');
-    });
-  });
-
-  describe('get referenceOctave()', () => {
-    test('returns the octave number of the reference note', () => {
-      const equal = new Temperament(equalTemperament);
-
-      expect(equal.referenceOctave).toBe(4);
-    });
-  });
-
-  describe('get referencePitch()', () => {
-    test('returns the pitch of the reference note', () => {
-      const equal = new Temperament(equalTemperament);
-
-      expect(equal.referencePitch).toBe(440);
-    });
-  });
-
-  describe('set referencePitch()', () => {
-    test('sets the pitch of the reference note', () => {
-      const equal = new Temperament(equalTemperament);
-
-      equal.referencePitch = 441;
-      expect(equal.referencePitch).toBe(441);
     });
   });
 });
