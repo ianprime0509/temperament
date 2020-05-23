@@ -7,7 +7,7 @@
  */
 /* eslint-env jest */
 
-import { OCTAVE_SIZE, Temperament, prettifyNoteName } from '.';
+import { OCTAVE_SIZE, Temperament } from '.';
 
 import { Temperament as TemperamentData } from './schema';
 
@@ -119,19 +119,11 @@ describe('Temperament', () => {
       expect(equal.getNoteNameFromPitch(880)[0]).toBe('A');
       expect(equal.getNoteNameFromPitch(261.626)[0]).toBe('C');
       expect(equal.getNoteNameFromPitch(addCents(261.626, 1))[0]).toBe('C');
-      expect(equal.getNoteNameFromPitch(addCents(311.127, -4))[0]).toBe(
-        'E{flat}'
-      );
-      expect(equal.getNoteNameFromPitch(addCents(1479.98, 20))[0]).toBe(
-        'F{sharp}'
-      );
+      expect(equal.getNoteNameFromPitch(addCents(311.127, -4))[0]).toBe('E♭');
+      expect(equal.getNoteNameFromPitch(addCents(1479.98, 20))[0]).toBe('F♯');
       expect(equal.getNoteNameFromPitch(addCents(2637.02, -15))[0]).toBe('E');
-      expect(equal.getNoteNameFromPitch(addCents(34.6478, 7))[0]).toBe(
-        'C{sharp}'
-      );
-      expect(equal.getNoteNameFromPitch(addCents(29.1352, -8))[0]).toBe(
-        'B{flat}'
-      );
+      expect(equal.getNoteNameFromPitch(addCents(34.6478, 7))[0]).toBe('C♯');
+      expect(equal.getNoteNameFromPitch(addCents(29.1352, -8))[0]).toBe('B♭');
       expect(equal.getNoteNameFromPitch(addCents(493.883, 25))[0]).toBe('B');
       expect(equal.getNoteNameFromPitch(addCents(523.251, -25))[0]).toBe('C');
     });
@@ -174,16 +166,16 @@ describe('Temperament', () => {
       const equal = new Temperament(equalTemperament);
       expect(equal.noteNames).toEqual([
         'C',
-        'C{sharp}',
+        'C♯',
         'D',
-        'E{flat}',
+        'E♭',
         'E',
         'F',
-        'F{sharp}',
+        'F♯',
         'G',
-        'G{sharp}',
+        'G♯',
         'A',
-        'B{flat}',
+        'B♭',
         'B',
       ]);
     });
@@ -192,16 +184,16 @@ describe('Temperament', () => {
       const qcm = new Temperament(quarterCommaMeantone);
       expect(qcm.noteNames).toEqual([
         'C',
-        'C{sharp}',
+        'C♯',
         'D',
-        'E{flat}',
+        'E♭',
         'E',
         'F',
-        'F{sharp}',
+        'F♯',
         'G',
-        'G{sharp}',
+        'G♯',
         'A',
-        'B{flat}',
+        'B♭',
         'B',
       ]);
     });
@@ -223,9 +215,9 @@ describe('Temperament', () => {
       expect(equal.getOffset('A', 6)).toBe(2400);
       expect(equal.getOffset('C', 4)).toBe(-900);
       expect(equal.getOffset('C', 5)).toBe(300);
-      expect(equal.getOffset('E{flat}', 4)).toBe(-600);
-      expect(equal.getOffset('E{flat}', 3)).toBe(-1800);
-      expect(equal.getOffset('G{sharp}', 5)).toBe(1100);
+      expect(equal.getOffset('E♭', 4)).toBe(-600);
+      expect(equal.getOffset('E♭', 3)).toBe(-1800);
+      expect(equal.getOffset('G♯', 5)).toBe(1100);
       expect(equal.getOffset('B', 3)).toBe(-1000);
     });
 
@@ -241,8 +233,8 @@ describe('Temperament', () => {
     test('throws an error for non-existent notes', () => {
       const equal = new Temperament(equalTemperament);
 
-      expect(() => equal.getOffset('Q{sharp}', 4)).toThrow(
-        "Note 'Q{sharp}' is not defined"
+      expect(() => equal.getOffset('Q♯', 4)).toThrow(
+        "Note 'Q♯' is not defined"
       );
       expect(() => equal.getOffset('AZ', 5)).toThrow(
         "Note 'AZ' is not defined"
@@ -260,10 +252,10 @@ describe('Temperament', () => {
       expect(equal.getPitch('A', 4)).toBeCloseTo(440);
       expect(equal.getPitch('A', 5)).toBeCloseTo(880);
       expect(equal.getPitch('C', 5)).toBeCloseTo(523.251);
-      expect(equal.getPitch('F{sharp}', 4)).toBeCloseTo(369.994);
+      expect(equal.getPitch('F♯', 4)).toBeCloseTo(369.994);
       expect(equal.getPitch('B', 7)).toBeCloseTo(3951.07);
-      expect(equal.getPitch('B{flat}', 2)).toBeCloseTo(116.541);
-      expect(equal.getPitch('C{sharp}', 0)).toBeCloseTo(17.3239);
+      expect(equal.getPitch('B♭', 2)).toBeCloseTo(116.541);
+      expect(equal.getPitch('C♯', 0)).toBeCloseTo(17.3239);
     });
   });
 
@@ -298,24 +290,5 @@ describe('Temperament', () => {
       equal.referencePitch = 441;
       expect(equal.referencePitch).toBe(441);
     });
-  });
-});
-
-describe('prettifyNoteName()', () => {
-  test('returns a string with element sequences replaced', () => {
-    expect(prettifyNoteName('A{sharp}')).toBe('A♯');
-    expect(prettifyNoteName('D{flat}')).toBe('D♭');
-    // Yes, I know this isn't a real note :)
-    expect(prettifyNoteName('C{sharp}{flat}')).toBe('C♯♭');
-  });
-
-  test('reprints unknown element sequences in output without curly braces', () => {
-    expect(prettifyNoteName('{unknown}')).toBe('unknown');
-    expect(prettifyNoteName('hi {there}, user')).toBe('hi there, user');
-  });
-
-  test('reprints unclosed element sequences in output without curly braces', () => {
-    expect(prettifyNoteName('{unclosed')).toBe('unclosed');
-    expect(prettifyNoteName('what is {this thing')).toBe('what is this thing');
   });
 });

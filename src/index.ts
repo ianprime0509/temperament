@@ -19,56 +19,6 @@ const validate = ajv.compile(schema);
 export const OCTAVE_SIZE = 1200;
 
 /**
- * Returns the "pretty" version of the given note name.
- *
- * "Pretty" means replacing elements enclosed in curly braces (\{\}) by
- * corresponding Unicode symbols, provided that the element is recognized. For
- * example, '\{sharp\}' will be replaced by '♯'.
- *
- * Note that this function is supposed to be simple.  Curly braces do not nest,
- * and an unclosed or unrecognized element sequence will be kept verbatim in the
- * output, but without the curly braces.  Currently, there is no way to escape a
- * curly brace, but this may change later.
- *
- * @param name - the note name to prettify
- * @returns the "pretty" note name, with special characters inserted
- */
-export function prettifyNoteName(name: string): string {
-  const replacements = new Map([
-    ['sharp', '♯'],
-    ['flat', '♭'],
-  ]);
-
-  let pretty = '';
-  let element = '';
-  let inElement = false;
-
-  for (const c of name) {
-    if (inElement) {
-      if (c === '}') {
-        pretty += replacements.has(element)
-          ? replacements.get(element)
-          : element;
-        inElement = false;
-        element = '';
-      } else {
-        element += c;
-      }
-    } else {
-      if (c === '{') {
-        inElement = true;
-      } else {
-        pretty += c;
-      }
-    }
-  }
-
-  pretty += element;
-
-  return pretty;
-}
-
-/**
  * Attempts to define the offset of the given note in the given offset map.
  *
  * @param offsets - the offset map in which to define the note

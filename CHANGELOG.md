@@ -8,6 +8,10 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Removed
+
+- `prettifyNoteName` function
+
 ## [2.0.0-alpha.1] - 2020-04-19
 
 ### Fixed
