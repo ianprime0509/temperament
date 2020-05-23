@@ -1,4 +1,5 @@
 lib/
+src/schema.d.ts
 
 ## From https://github.com/github/gitignore/blob/master/Node.gitignore
 # Logs
