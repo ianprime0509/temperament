@@ -36,14 +36,35 @@ describe("Temperament", () => {
       expect(() => new Temperament(pythagoreanD)).not.toThrow();
     });
 
-    test("throws an error when the input format is invalid", () => {
+    test("works correctly for a temperament with all notes defined relative to the reference pitch", () => {
+      const temperament = new Temperament({
+        name: "Notes defined relative to reference",
+        referenceName: "A",
+        referencePitch: 440,
+        referenceOctave: 4,
+        octaveBaseName: "C",
+        notes: {
+          C: ["A", 300],
+          D: ["A", 500],
+          E: ["A", 700],
+        },
+      });
+      expect(temperament.getOffset("C", 4)).toBe(-900);
+      expect(temperament.getOffset("D", 4)).toBe(-700);
+      expect(temperament.getOffset("E", 4)).toBe(-500);
+      expect(temperament.getOffset("A", 4)).toBe(0);
+    });
+
+    test("throws an error when the input contains no notes", () => {
       expect(
         () =>
           new Temperament(({
             name: "No notes",
           } as unknown) as TemperamentData)
       ).toThrow("Incorrect temperament format");
+    });
 
+    test("throws an error when the input notes are in an invalid format", () => {
       expect(
         () =>
           new Temperament(({
@@ -58,7 +79,9 @@ describe("Temperament", () => {
             },
           } as unknown) as TemperamentData)
       ).toThrow("Incorrect temperament format");
+    });
 
+    test("throws an error when the notes object is empty", () => {
       expect(
         () =>
           new Temperament({
@@ -70,7 +93,9 @@ describe("Temperament", () => {
             notes: {},
           })
       ).toThrow("Incorrect temperament format");
+    });
 
+    test("throws an error when the reference pitch is non-positive", () => {
       expect(
         () =>
           new Temperament({
@@ -83,7 +108,7 @@ describe("Temperament", () => {
               A: ["A", 0],
             },
           })
-      );
+      ).toThrow("Incorrect temperament format");
     });
 
     test("throws an error when given conflicting note definitions", () => {
@@ -119,6 +144,23 @@ describe("Temperament", () => {
             },
           })
       ).toThrow("Not able to determine the pitch");
+    });
+
+    test("throws an error when the octave base is not defined as a note", () => {
+      expect(
+        () =>
+          new Temperament({
+            name: "Octave base not defined as a note",
+            referenceName: "A",
+            referencePitch: 440,
+            referenceOctave: 4,
+            octaveBaseName: "C",
+            notes: {
+              A: ["A", 0],
+              B: ["A", 200],
+            },
+          })
+      ).toThrow("Octave base not defined as a note");
     });
   });
 
@@ -157,6 +199,14 @@ describe("Temperament", () => {
         "B♭",
         "B",
       ]);
+    });
+  });
+
+  describe("get octaveBaseName()", () => {
+    test("returns the name of the octave base note", () => {
+      const equal = new Temperament(equalTemperament);
+
+      expect(equal.octaveBaseName).toBe("C");
     });
   });
 
@@ -306,6 +356,27 @@ describe("Temperament", () => {
       expect(qcm.getOffset("D", 4)).toBeCloseTo(-696.6);
       expect(qcm.getOffset("C", 4)).toBeCloseTo(-889.8);
       expect(qcm.getOffset("C", 5)).toBeCloseTo(310.2);
+    });
+
+    test("returns offsets above the octave base", () => {
+      const temperament = new Temperament({
+        name: "Sample temperament",
+        referenceName: "A",
+        referencePitch: 440,
+        referenceOctave: 4,
+        octaveBaseName: "C",
+        notes: {
+          G: ["A", -1400],
+          A: ["A", 0],
+          C: ["A", 300],
+          D: ["C", -2200],
+        },
+      });
+
+      expect(temperament.getOffset("G", 4)).toBe(-200);
+      expect(temperament.getOffset("A", 4)).toBe(0);
+      expect(temperament.getOffset("C", 4)).toBe(-900);
+      expect(temperament.getOffset("D", 4)).toBe(-700);
     });
 
     test("throws an error for non-existent notes", () => {
