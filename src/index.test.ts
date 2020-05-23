@@ -55,6 +55,24 @@ describe("Temperament", () => {
       expect(temperament.getOffset("A", 4)).toBe(0);
     });
 
+    test("works correctly for a temperament with multiple non-conflicting offsets for the same note", () => {
+      const temperament = new Temperament({
+        name: "Multiple non-conflicting offsets",
+        referenceName: "A",
+        referencePitch: 440,
+        referenceOctave: 4,
+        octaveBaseName: "C",
+        notes: {
+          A: ["C", -300],
+          C: ["A", 1500],
+          D: ["C", 200],
+        },
+      });
+      expect(temperament.getOffset("C", 4)).toBe(-900);
+      expect(temperament.getOffset("D", 4)).toBe(-700);
+      expect(temperament.getOffset("A", 4)).toBe(0);
+    });
+
     test("throws an error when the input contains no notes", () => {
       expect(
         () =>

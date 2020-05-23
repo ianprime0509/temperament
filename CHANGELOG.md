@@ -8,9 +8,12 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-### Added
+### Changed
 
-- More validations on function inputs (e.g. pitches must be positive numbers)
+- Added more validations on function inputs (e.g. pitches must be positive
+  numbers)
+- Temperament definitions may now imply more than one offset for a note as long
+  as they don't conflict
 
 ### Removed
 

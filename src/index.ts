@@ -32,7 +32,13 @@ function defineOffset(
   note: string,
   offset: number
 ): void {
-  if (offsets.has(note) && offsets.get(note) !== offset) {
+  const existingOffset = offsets.get(note);
+  // It's OK if there's an existing offset as long as it doesn't conflict (must
+  // be congruent to the new offset modulo the octave size in cents)
+  if (
+    existingOffset !== undefined &&
+    (existingOffset - offset) % OCTAVE_SIZE !== 0
+  ) {
     throw new Error(`Conflicting definition for '${note}' found`);
   }
   offsets.set(note, offset);
