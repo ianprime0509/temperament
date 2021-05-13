@@ -15,9 +15,10 @@ import equalTemperamentJson from "../temperaments/equal.json";
 import quarterCommaMeantoneJson from "../temperaments/quarterCommaMeantone.json";
 import pythagoreanDJson from "../temperaments/pythagoreanD.json";
 
-const equalTemperament = (equalTemperamentJson as unknown) as TemperamentData;
-const quarterCommaMeantone = (quarterCommaMeantoneJson as unknown) as TemperamentData;
-const pythagoreanD = (pythagoreanDJson as unknown) as TemperamentData;
+const equalTemperament = equalTemperamentJson as unknown as TemperamentData;
+const quarterCommaMeantone =
+  quarterCommaMeantoneJson as unknown as TemperamentData;
+const pythagoreanD = pythagoreanDJson as unknown as TemperamentData;
 
 /**
  * Adds the given number of cents to the given pitch.
@@ -76,16 +77,16 @@ describe("Temperament", () => {
     test("throws an error when the input contains no notes", () => {
       expect(
         () =>
-          new Temperament(({
+          new Temperament({
             name: "No notes",
-          } as unknown) as TemperamentData)
+          } as unknown as TemperamentData)
       ).toThrow("Incorrect temperament format");
     });
 
     test("throws an error when the input notes are in an invalid format", () => {
       expect(
         () =>
-          new Temperament(({
+          new Temperament({
             name: "Invalid notes",
             referenceName: "A",
             referencePitch: 440,
@@ -95,7 +96,7 @@ describe("Temperament", () => {
               A: "A",
               C: "C",
             },
-          } as unknown) as TemperamentData)
+          } as unknown as TemperamentData)
       ).toThrow("Incorrect temperament format");
     });
 
