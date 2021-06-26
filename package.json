@@ -30,7 +30,10 @@
     "theory",
     "pitch"
   ],
-  "author": "Ian Johnson <ianprime0509@gmail.com>",
+  "author": {
+    "name": "Ian Johnson",
+    "email": "ian@ianjohnson.xyz"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ianprime0509/temperament/issues"
