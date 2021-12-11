@@ -1,4 +1,5 @@
 import babel from "rollup-plugin-babel";
+import copy from "rollup-plugin-copy";
 import json from "@rollup/plugin-json";
 
 export default {
@@ -18,6 +19,9 @@ export default {
     babel({
       exclude: "node_modules/**",
       extensions: [".ts", ".js"],
+    }),
+    copy({
+      targets: [{ src: "src/schema.d.ts", dest: "lib/schema.d.ts" }],
     }),
   ],
   external: ["ajv"],
