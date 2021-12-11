@@ -8,6 +8,10 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Fixed
+
+- Added `schema.d.ts` to published output directory (alongside `index.d.ts`)
+
 ## [2.0.1] - 2020-09-12
 
 ### Changed
