@@ -8,6 +8,13 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.1.0] - 2021-12-11
+
+### Added
+
+- Added `toJSON` method to support converting a `Temperament` back into JSON
+  data
+
 ### Fixed
 
 - Added `schema.d.ts` to published output directory (alongside `index.d.ts`)
