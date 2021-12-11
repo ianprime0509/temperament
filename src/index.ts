@@ -167,7 +167,7 @@ export class Temperament {
   /**
    * Creates a new temperament.
    *
-   * @param data - the temperament data, in the format described by the README
+   * @param data - the temperament data, in the format defined by the schema
    */
   constructor(data: TemperamentData) {
     if (!validate(data)) {
@@ -369,5 +369,33 @@ export class Temperament {
     return (
       this._referencePitch * 2 ** (this.getOffset(note, octave) / OCTAVE_SIZE)
     );
+  }
+
+  /**
+   * Returns temperament data in the format defined by the schema.
+   *
+   * The returned data is not necessarily equal to the data object passed in the
+   * constructor, but it is equivalent as a temperament. For example, the way
+   * the note offsets are expressed may be different.
+   *
+   * @returns temperament data describing this temperament, suitable for
+   * conversion to JSON
+   */
+  toJSON(): TemperamentData {
+    return {
+      name: this.name,
+      description: this.description,
+      source: this.source,
+      octaveBaseName: this.octaveBaseName,
+      referencePitch: this.referencePitch,
+      referenceName: this.referenceName,
+      referenceOctave: this.referenceOctave,
+      notes: Object.fromEntries(
+        [...this._offsets.entries()].map(([note, offset]) => [
+          note,
+          [this.referenceName, offset],
+        ])
+      ),
+    };
   }
 }
