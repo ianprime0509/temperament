@@ -9,6 +9,7 @@
 import Ajv from "ajv";
 
 import { Temperament as TemperamentData } from "./schema";
+export type { TemperamentData };
 
 import schema from "./schema.json";
 
