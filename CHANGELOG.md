@@ -8,6 +8,8 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.2.0] - 2021-12-11
+
 ### Added
 
 - Exported `TemperamentData` interface generated from schema
