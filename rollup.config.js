@@ -21,7 +21,7 @@ export default {
       extensions: [".ts", ".js"],
     }),
     copy({
-      targets: [{ src: "src/schema.d.ts", dest: "lib/schema.d.ts" }],
+      targets: [{ src: "src/schema.d.ts", dest: "lib" }],
     }),
   ],
   external: ["ajv"],
