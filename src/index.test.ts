@@ -1,19 +1,11 @@
-/*
- * Copyright 2018-2020 Ian Johnson
- *
- * This is free software, distributed under the MIT license.  A copy of the
- * license can be found in the LICENSE file in the project root, or at
- * https://opensource.org/licenses/MIT.
- */
 /* eslint-env jest */
+import { OCTAVE_SIZE, Temperament } from "./index.js";
 
-import { OCTAVE_SIZE, Temperament } from ".";
+import type { Temperament as TemperamentData } from "./schema.js";
 
-import { Temperament as TemperamentData } from "./schema";
-
-import equalTemperamentJson from "../temperaments/equal.json";
-import quarterCommaMeantoneJson from "../temperaments/quarterCommaMeantone.json";
-import pythagoreanDJson from "../temperaments/pythagoreanD.json";
+import equalTemperamentJson from "./temperaments/equal.json";
+import quarterCommaMeantoneJson from "./temperaments/quarterCommaMeantone.json";
+import pythagoreanDJson from "./temperaments/pythagoreanD.json";
 
 const equalTemperament = equalTemperamentJson as unknown as TemperamentData;
 const quarterCommaMeantone =

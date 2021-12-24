@@ -1,14 +1,6 @@
-/*
- * Copyright 2018-2020 Ian Johnson
- *
- * This is free software, distributed under the MIT license.  A copy of the
- * license can be found in the LICENSE file in the project root, or at
- * https://opensource.org/licenses/MIT.
- */
-
 import Ajv from "ajv";
 
-import { Temperament as TemperamentData } from "./schema";
+import type { Temperament as TemperamentData } from "./schema.js";
 export type { TemperamentData };
 
 import schema from "./schema.json";
