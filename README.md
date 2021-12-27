@@ -50,6 +50,8 @@ The format of a temperament is specified by the
 [JSON schema](http://json-schema.org/) located in `src/schema.json`. Each item
 in the schema is annotated with a `description` key that explains its purpose.
 
+Some samples are included under `src/temperaments`.
+
 ### Basic usage
 
 Here is an example of a temperament file describing equal temperament:
@@ -63,17 +65,17 @@ Here is an example of a temperament file describing equal temperament:
   "octaveBaseName": "C",
   "notes": {
     "C": ["C", 0],
-    "C{sharp}": ["C", 100],
-    "D": ["C{sharp}", 100],
-    "E{flat}": ["D", 100],
-    "E": ["E{flat}", 100],
+    "C♯": ["C", 100],
+    "D": ["C♯", 100],
+    "E♭": ["D", 100],
+    "E": ["E♭", 100],
     "F": ["E", 100],
-    "F{sharp}": ["F", 100],
-    "G": ["F{sharp}", 100],
-    "G{sharp}": ["G", 100],
-    "A": ["G{sharp}", 100],
-    "B{flat}": ["A", 100],
-    "B": ["B{flat}", 100]
+    "F♯": ["F", 100],
+    "G": ["F♯", 100],
+    "G♯": ["G", 100],
+    "A": ["G♯", 100],
+    "B♭": ["A", 100],
+    "B": ["B♭", 100]
   }
 }
 ```
@@ -120,19 +122,8 @@ G, and so on.
 
 A note on octaves: an octave is defined to be 1200 cents, or a pitch ratio of
 2:1. The notes that you specify in the `notes` object are assumed to fill a
-_single octave_, meaning that the definition `"C{sharp}": ["C", 1300]` is
-equivalent to the one given in the example above for C♯, since 1300 - 1200
-is 100.
-
-### Note name shortcuts
-
-Certain special characters in note names can be replaced by sequences enclosed
-in curly braces which can then be converted into special characters using the
-`prettifyNoteName` function. Currently, only `{sharp}` (corresponding to ♯) and
-`{flat}` (corresponding to ♭) are recognized. For example, the note name
-`B{flat}` used in the sample above will be displayed as B♭. Of course, it is
-also possible to simply type the Unicode characters directly into the
-temperament file.
+_single octave_, meaning that the definition `"C♯": ["C", 1300]` is equivalent
+to the one given in the example above for C♯, since 1300 - 1200 is 100.
 
 ### Metadata
 
