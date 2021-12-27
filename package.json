@@ -18,6 +18,7 @@
     "build:lib": "vite build",
     "build:types": "tsc -p tsconfig.types.json",
     "fmt": "prettier --write .",
+    "prepack": "npm run build",
     "test": "run-p test:*",
     "test:check": "tsc --noEmit",
     "test:fmt": "prettier --check .",
