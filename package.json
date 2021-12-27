@@ -17,7 +17,6 @@
     "build": "run-s build:lib build:types",
     "build:lib": "vite build",
     "build:types": "tsc -p tsconfig.types.json",
-    "compile": "rollup -c",
     "fmt": "prettier --write .",
     "test": "run-p test:*",
     "test:check": "tsc --noEmit",
