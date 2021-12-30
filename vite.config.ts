@@ -6,7 +6,8 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
       name: "Temperament",
-      fileName: (format) => `temperament.${format}.js`,
+      fileName: (format) =>
+        `temperament.${format}.${format === "es" ? "mjs" : "cjs"}`,
     },
     sourcemap: true,
     rollupOptions: {
