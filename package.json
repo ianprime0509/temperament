@@ -4,13 +4,14 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/temperament.umd.js",
-  "module": "./dist/temperament.es.js",
+  "main": "./dist/temperament.umd.cjs",
+  "module": "./dist/temperament.es.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/temperament.es.js",
-      "require": "./dist/temperament.umd.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/temperament.es.mjs",
+      "require": "./dist/temperament.umd.cjs"
     }
   },
   "scripts": {
