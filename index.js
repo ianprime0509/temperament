@@ -1,9 +1,75 @@
+/**
+ * @typedef {import("./schema").Temperament} TemperamentData
+ */
 import Ajv from "ajv";
 
-import type { Temperament as TemperamentData } from "./schema.js";
-export type { TemperamentData };
-
-import schema from "./schema.json";
+export const schema = {
+  title: "Temperament",
+  description:
+    "A complete description of a musical temperament with additional metadata.",
+  type: "object",
+  required: [
+    "name",
+    "octaveBaseName",
+    "referencePitch",
+    "referenceName",
+    "referenceOctave",
+    "notes",
+  ],
+  properties: {
+    name: {
+      description: "The name of the temperament.",
+      type: "string",
+    },
+    description: {
+      description: "A description of the temperament.",
+      type: "string",
+    },
+    source: {
+      description: "The source from which the temperament data was obtained.",
+      type: "string",
+    },
+    octaveBaseName: {
+      description: "The name of the base note of the octave.",
+      type: "string",
+    },
+    referencePitch: {
+      description: "The frequency (in Hz) of the reference pitch.",
+      type: "number",
+      exclusiveMinimum: 0,
+    },
+    referenceName: {
+      description: "The note name of the reference pitch.",
+      type: "string",
+    },
+    referenceOctave: {
+      description: "The octave number of the reference pitch.",
+      type: "integer",
+    },
+    notes: {
+      description: "A mapping of note names to a description of each note.",
+      type: "object",
+      minProperties: 1,
+      additionalProperties: {
+        description:
+          "A description of the note, as an offset from another note.",
+        type: "array",
+        minItems: 2,
+        maxItems: 2,
+        items: [
+          {
+            description: "The base note from which to offset.",
+            type: "string",
+          },
+          {
+            description: "The offset (in cents) from the base note.",
+            type: "number",
+          },
+        ],
+      },
+    },
+  },
+};
 
 const ajv = new Ajv();
 const validate = ajv.compile(schema);
@@ -14,17 +80,13 @@ export const OCTAVE_SIZE = 1200;
 /**
  * Attempts to define the offset of the given note in the given offset map.
  *
- * @param offsets - the offset map in which to define the note
- * @param note - the name of the note to define
- * @param offset - the offset (in cents) of the note from the
+ * @param offsets {Map<string, number>} the offset map in which to define the note
+ * @param note {string} the name of the note to define
+ * @param offset {number} the offset (in cents) of the note from the
  * reference pitch
- * @throws {@link Error} if the given offset conflicts with an existing one
+ * @throws {Error} if the given offset conflicts with an existing one
  */
-function defineOffset(
-  offsets: Map<string, number>,
-  note: string,
-  offset: number
-): void {
+function defineOffset(offsets, note, offset) {
   const existingOffset = offsets.get(note);
   // It's OK if there's an existing offset as long as it doesn't conflict (must
   // be congruent to the new offset modulo the octave size in cents)
@@ -43,14 +105,15 @@ function defineOffset(
  * This is a convenience method to make the {@link Temperament} constructor
  * shorter and more readable.
  *
- * @param temperament - the temperament data
+ * @param temperament {TemperamentData} the temperament data
+ * @returns {Map<string, number>} the computed note offsets
  */
-function computeOffsets(temperament: TemperamentData): Map<string, number> {
+function computeOffsets(temperament) {
   const notes = temperament.notes;
   const offsets = new Map([[temperament.referenceName, 0]]);
   // A queue of note names and corresponding offsets that still need to be
   // processed (considered for use in a derivation)
-  const todo: [string, number][] = [[temperament.referenceName, 0]];
+  /** @type [string, number][] */ const todo = [[temperament.referenceName, 0]];
 
   while (todo.length !== 0) {
     const [currentName, currentOffset] = todo[0];
@@ -139,30 +202,46 @@ function computeOffsets(temperament: TemperamentData): Map<string, number> {
  * temperament) are available for direct access, since changing them has no
  * effect on the internal structure of the temperament.  These metadata
  * properties correspond directly to properties in the input data, and are
- * documented below.  Please note that a metadata property may be `undefined`
- * if it was not defined in the input data.
+ * documented below.  Please note that a metadata property may be `undefined` if
+ * it was not defined in the input data.
  */
 export class Temperament {
-  /** The name of the temperament. */
-  readonly name: string;
-  /** A short description of the temperament. */
-  readonly description?: string;
-  /** The source of the temperament data (e.g. a URL). */
-  readonly source?: string;
+  /** The name of the temperament.
+   *
+   * @readonly @type {string}
+   */
+  name;
+  /** A short description of the temperament.
+   *
+   * @readonly @type {string | undefined}
+   */
+  description;
+  /** The source of the temperament data (e.g. a URL).
+   *
+   * @readonly @type {string | undefined}
+   */
+  source;
 
-  private readonly _octaveBaseName: string;
-  private readonly _referenceName: string;
-  private readonly _referenceOctave: number;
-  private _referencePitch: number;
-  private readonly _noteNames: string[];
-  private readonly _offsets: Map<string, number>;
+  /** @private @readonly @type {string} */
+  _octaveBaseName;
+  /** @private @readonly @type {string} */
+  _referenceName;
+  /** @private @readonly @type {number} */
+  _referenceOctave;
+  /** @private @type {number} */
+  _referencePitch;
+  /** @private @readonly @type {string[]} */
+  _noteNames;
+  /** @private @readonly @type {Map<string, number>} */
+  _offsets;
 
   /**
    * Creates a new temperament.
    *
-   * @param data - the temperament data, in the format defined by the schema
+   * @param data {TemperamentData} the temperament data, in the format defined
+   * by the schema
    */
-  constructor(data: TemperamentData) {
+  constructor(data) {
     if (!validate(data)) {
       throw new TypeError(
         `Incorrect temperament format: ${ajv.errorsText(validate.errors)}`
@@ -189,10 +268,10 @@ export class Temperament {
   /**
    * Returns an array of the note names defined in the temperament.
    *
-   * @returns the note names, sorted in increasing order of pitch starting with
-   * the octave base
+   * @returns {string[]} the note names, sorted in increasing order of pitch
+   * starting with the octave base
    */
-  get noteNames(): string[] {
+  get noteNames() {
     // We need to make a copy of the array so that the internal one doesn't get
     // changed by the caller
     return [...this._noteNames];
@@ -201,46 +280,46 @@ export class Temperament {
   /**
    * Returns the name of the octave base note.
    *
-   * @returns the name of the octave base note
+   * @returns {string} the name of the octave base note
    */
-  get octaveBaseName(): string {
+  get octaveBaseName() {
     return this._octaveBaseName;
   }
 
   /**
    * Returns the name of the reference note.
    *
-   * @returns the name of the reference note
+   * @returns {string} the name of the reference note
    */
-  get referenceName(): string {
+  get referenceName() {
     return this._referenceName;
   }
 
   /**
    * Returns the octave number of the reference note.
    *
-   * @returns the octave number of the reference note
+   * @returns {number} the octave number of the reference note
    */
-  get referenceOctave(): number {
+  get referenceOctave() {
     return this._referenceOctave;
   }
 
   /**
    * Returns the reference pitch.
    *
-   * @returns the reference pitch, in Hz
+   * @returns {number} the reference pitch, in Hz
    */
-  get referencePitch(): number {
+  get referencePitch() {
     return this._referencePitch;
   }
 
   /**
    * Sets the reference pitch.
    *
-   * @param pitch - the reference pitch (in Hz)
-   * @throws {@link Error} if `pitch` is not positive
+   * @param pitch {number} the reference pitch (in Hz)
+   * @throws {Error} if `pitch` is not positive
    */
-  set referencePitch(pitch: number) {
+  set referencePitch(pitch) {
     if (pitch <= 0) throw new Error("Pitch must be positive");
 
     this._referencePitch = pitch;
@@ -250,12 +329,12 @@ export class Temperament {
    * Returns the closest note to the given pitch (in Hz), along with the pitch
    * difference (in cents).
    *
-   * @param pitch - the pitch of the note to identify (in Hz)
-   * @returns a tuple containing the note name as its first element and the
-   * offset (in cents) from that note as its second element
-   * @throws {@link Error} if `pitch` is not positive
+   * @param pitch {number} the pitch of the note to identify (in Hz)
+   * @returns {[string, number]} a tuple containing the note name as its first
+   * element and the offset (in cents) from that note as its second element
+   * @throws {Error} if `pitch` is not positive
    */
-  getNoteNameFromPitch(pitch: number): [string, number] {
+  getNoteNameFromPitch(pitch) {
     if (pitch <= 0) throw new Error("Pitch must be positive");
 
     // We need to get the offset in cents from the reference pitch so we can
@@ -315,12 +394,12 @@ export class Temperament {
    * Return an array with octave numbers in order, forming a range with the
    * given radius around the reference octave.
    *
-   * @param radius - the number of octaves on either end of the reference octave
-   * to include. Must be non-negative.
-   * @returns a range of octave numbers
-   * @throws {@link Error} if `radius` is negative
+   * @param radius {number} the number of octaves on either end of the reference
+   * octave to include. Must be non-negative.
+   * @returns {number[]} a range of octave numbers
+   * @throws {Error} if `radius` is negative
    */
-  getOctaveRange(radius: number): number[] {
+  getOctaveRange(radius) {
     if (radius < 0) throw new Error("Radius must not be negative");
 
     const start = this._referenceOctave - radius;
@@ -337,12 +416,12 @@ export class Temperament {
   /**
    * Returns the offset of the given note.
    *
-   * @param note - the name of the note
-   * @param octave - the octave number of the note
-   * @returns the offset (in cents), relative to the reference pitch
-   * @throws {@link Error} if `note` is not defined
+   * @param note {string} the name of the note
+   * @param octave {number} the octave number of the note
+   * @returns {number} the offset (in cents), relative to the reference pitch
+   * @throws {Error} if `note` is not defined
    */
-  getOffset(note: string, octave: number): number {
+  getOffset(note, octave) {
     const offset = this._offsets.get(note);
     if (offset === undefined) {
       throw new Error(`Note '${note}' is not defined`);
@@ -353,12 +432,12 @@ export class Temperament {
   /**
    * Returns the pitch of the given note.
    *
-   * @param note - the name of the note
-   * @param octave - the octave number of the note
-   * @returns the pitch (in Hz)
-   * @throws {@link Error} if `note` is not defined
+   * @param note {string} the name of the note
+   * @param octave {number} the octave number of the note
+   * @returns {number} the pitch (in Hz)
+   * @throws {Error} if `note` is not defined
    */
-  getPitch(note: string, octave: number): number {
+  getPitch(note, octave) {
     return (
       this._referencePitch * 2 ** (this.getOffset(note, octave) / OCTAVE_SIZE)
     );
@@ -371,10 +450,10 @@ export class Temperament {
    * constructor, but it is equivalent as a temperament. For example, the way
    * the note offsets are expressed may be different.
    *
-   * @returns temperament data describing this temperament, suitable for
-   * conversion to JSON
+   * @returns {TemperamentData} temperament data describing this temperament,
+   * suitable for conversion to JSON
    */
-  toJSON(): TemperamentData {
+  toJSON() {
     return {
       name: this.name,
       description: this.description,

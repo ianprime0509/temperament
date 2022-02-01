@@ -26,6 +26,10 @@ browser or Deno:
 import { Temperament } from "https://esm.sh/temperament@3";
 ```
 
+This package is
+[ESM-only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c),
+which means it cannot be used with `require`.
+
 ## Usage
 
 The `Temperament` class encapsulates information about a temperament, providing
@@ -47,8 +51,11 @@ to the sample given in the [basic usage section](#basic-usage).
 ## Temperament format
 
 The format of a temperament is specified by the
-[JSON schema](http://json-schema.org/) located in `src/schema.json`. Each item
-in the schema is annotated with a `description` key that explains its purpose.
+[JSON schema](http://json-schema.org/) exported as `schema` in `index.js`. The
+schema is also published as a JSON file with each release, and can be found with
+the latest release on
+[GitHub](https://github.com/ianprime0509/temperament/releases). Each item in the
+schema is annotated with a `description` key that explains its purpose.
 
 Some samples are included under `src/temperaments`.
 
