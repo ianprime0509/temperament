@@ -59,6 +59,7 @@ test("works correctly for a temperament with multiple non-conflicting offsets fo
 test("throws an error when the input contains no notes", () => {
   assert.throws(
     () =>
+      // @ts-expect-error this test is for catching type errors
       new Temperament({
         name: "No notes",
       }),
@@ -76,7 +77,9 @@ test("throws an error when the input notes are in an invalid format", () => {
         referenceOctave: 4,
         octaveBaseName: "C",
         notes: {
+          // @ts-expect-error this test is for catching type errors
           A: "A",
+          // @ts-expect-error this test is for catching type errors
           C: "C",
         },
       }),

@@ -4,8 +4,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "checkJs": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
+    "noEmit": true,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -16,5 +15,5 @@
     "isolatedModules": true,
     "esModuleInterop": true
   },
-  "include": ["index.js", "schema.d.ts"]
+  "include": ["index.js", "test/*.js"]
 }
