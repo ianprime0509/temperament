@@ -2,7 +2,10 @@
   "name": "temperament",
   "description": "A library for working with musical temperaments.",
   "files": [
-    "dist"
+    "index.js",
+    "index.d.ts",
+    "schema.d.ts",
+    "schema.json"
   ],
   "type": "module",
   "main": "index.js",
