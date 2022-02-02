@@ -57,7 +57,7 @@ the latest release on
 [GitHub](https://github.com/ianprime0509/temperament/releases). Each item in the
 schema is annotated with a `description` key that explains its purpose.
 
-Some samples are included under `src/temperaments`.
+Some samples are included under `temperaments`.
 
 ### Basic usage
 
