@@ -23,7 +23,7 @@ You can also use a CDN, such as [esm.sh](https://esm.sh), directly from a
 browser or Deno:
 
 ```js
-import { Temperament } from "https://esm.sh/temperament@3";
+import { Temperament } from "https://esm.sh/temperament@4";
 ```
 
 This package is
