@@ -5,15 +5,7 @@
     "moduleResolution": "node",
     "checkJs": true,
     "noEmit": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noImplicitOverride": true,
-    "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
-    "esModuleInterop": true
+    "strict": true
   },
   "include": ["index.js", "test/*.js"]
 }
