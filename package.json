@@ -17,12 +17,13 @@
     "build": "run-s build:clean build:generate-schema build:types",
     "build:clean": "rimraf index.d.ts schema.d.ts schema.json",
     "build:generate-schema": "node generate-schema.js",
-    "build:types": "tsc",
+    "build:types": "tsc -p tsconfig.declaration.json",
     "fmt": "prettier --write .",
     "prepack": "npm run build",
     "test": "run-p test:*",
     "test:fmt": "prettier --check .",
     "test:lint": "eslint .",
+    "test:types": "tsc",
     "test:unit": "uvu"
   },
   "repository": {
