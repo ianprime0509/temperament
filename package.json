@@ -2,30 +2,32 @@
   "name": "temperament",
   "description": "A library for working with musical temperaments.",
   "files": [
-    "dist"
+    "index.js",
+    "index.d.ts",
+    "schema.d.ts",
+    "schema.json"
   ],
-  "main": "./dist/temperament.umd.cjs",
-  "module": "./dist/temperament.es.mjs",
-  "types": "./dist/index.d.ts",
+  "type": "module",
+  "main": "index.js",
+  "types": "index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/temperament.es.mjs",
-      "require": "./dist/temperament.umd.cjs"
+      "types": "./index.d.ts",
+      "import": "./index.js"
     }
   },
   "scripts": {
-    "build": "run-s build:lib build:types",
-    "build:lib": "vite build",
-    "build:types": "tsc -p tsconfig.types.json",
+    "build": "run-s build:clean build:generate-schema build:types",
+    "build:clean": "rimraf index.d.ts schema.d.ts schema.json",
+    "build:generate-schema": "node generate-schema.js",
+    "build:types": "tsc -p tsconfig.declaration.json",
     "fmt": "prettier --write .",
     "prepack": "npm run build",
     "test": "run-p test:*",
-    "test:check": "tsc --noEmit",
     "test:fmt": "prettier --check .",
-    "test:lint": "eslint --ext .js,.cjs,.mjs,.ts .",
-    "test:unit": "jest",
-    "prepare": "json2ts src/schema.json src/schema.ts"
+    "test:lint": "eslint .",
+    "test:types": "tsc",
+    "test:unit": "uvu"
   },
   "repository": {
     "type": "git",
@@ -50,21 +52,13 @@
     "ajv": "^8.9.0"
   },
   "devDependencies": {
-    "@types/jest": "^27.4.0",
-    "@typescript-eslint/eslint-plugin": "^5.10.2",
-    "@typescript-eslint/parser": "^5.10.2",
-    "eslint": "^8.8.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-tsdoc": "^0.2.14",
-    "jest": "^27.4.7",
+    "eslint": "^8.9.0",
     "json-schema-to-typescript": "^10.1.5",
     "npm-run-all": "^4.1.5",
     "prettier": "2.5.1",
-    "semantic-release": "^18.0.1",
-    "ts-jest": "^27.1.3",
-    "ts-jest-resolver": "^2.0.0",
-    "typescript": "^4.5.3",
-    "vite": "^2.7.13"
+    "rimraf": "^3.0.2",
+    "semantic-release": "^19.0.2",
+    "typescript": "^4.5.5",
+    "uvu": "^0.5.3"
   }
 }
