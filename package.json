@@ -52,13 +52,13 @@
     "ajv": "^8.11.0"
   },
   "devDependencies": {
-    "eslint": "^8.14.0",
-    "json-schema-to-typescript": "^10.1.5",
+    "eslint": "^8.21.0",
+    "json-schema-to-typescript": "^11.0.2",
     "npm-run-all": "^4.1.5",
-    "prettier": "2.6.2",
+    "prettier": "2.7.1",
     "rimraf": "^3.0.2",
-    "semantic-release": "^19.0.2",
-    "typescript": "^4.6.3",
-    "uvu": "^0.5.3"
+    "semantic-release": "^19.0.3",
+    "typescript": "^4.7.4",
+    "uvu": "^0.5.6"
   }
 }
