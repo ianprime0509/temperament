@@ -59,7 +59,7 @@
     "prettier": "2.8.1",
     "rimraf": "^3.0.2",
     "semantic-release": "^19.0.5",
-    "typescript": "^4.8.4",
+    "typescript": "^4.9.4",
     "uvu": "^0.5.6"
   }
 }
