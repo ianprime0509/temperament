@@ -1,7 +1,7 @@
 # temperament
 
 [![npm](https://img.shields.io/npm/v/temperament.svg)](https://www.npmjs.com/package/temperament)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ianprime0509/temperament/CI)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/ianprime0509/temperament/ci.yml?branch=main)
 
 This is a library for working with
 [musical temperaments](https://en.wikipedia.org/wiki/Musical_temperament) in
