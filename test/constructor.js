@@ -63,7 +63,7 @@ test("throws an error when the input contains no notes", () => {
       new Temperament({
         name: "No notes",
       }),
-    "Incorrect temperament format"
+    "Incorrect temperament format",
   );
 });
 
@@ -83,7 +83,7 @@ test("throws an error when the input notes are in an invalid format", () => {
           C: "C",
         },
       }),
-    "Incorrect temperament format"
+    "Incorrect temperament format",
   );
 });
 
@@ -98,7 +98,7 @@ test("throws an error when the notes object is empty", () => {
         octaveBaseName: "C",
         notes: {},
       }),
-    "Incorrect temperament format"
+    "Incorrect temperament format",
   );
 });
 
@@ -115,7 +115,7 @@ test("throws an error when the reference pitch is non-positive", () => {
           A: ["A", 0],
         },
       }),
-    "Incorrect temperament format"
+    "Incorrect temperament format",
   );
 });
 
@@ -133,7 +133,7 @@ test("throws an error when given conflicting note definitions", () => {
           C: ["A", 500],
         },
       }),
-    "Conflicting definition"
+    "Conflicting definition",
   );
 });
 
@@ -152,7 +152,7 @@ test("throws an error when not enough note information is given", () => {
           C: ["A", 500],
         },
       }),
-    "Not able to determine the pitch"
+    "Not able to determine the pitch",
   );
 });
 
@@ -170,7 +170,7 @@ test("throws an error when the octave base is not defined as a note", () => {
           B: ["A", 200],
         },
       }),
-    "Octave base not defined as a note"
+    "Octave base not defined as a note",
   );
 });
 
