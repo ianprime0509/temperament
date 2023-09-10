@@ -9,7 +9,7 @@ import { OCTAVE_SIZE } from "../index.js";
 
 export const equalTemperament = await readTemperament("equal");
 export const quarterCommaMeantone = await readTemperament(
-  "quarterCommaMeantone"
+  "quarterCommaMeantone",
 );
 export const pythagoreanD = await readTemperament("pythagoreanD");
 
@@ -21,7 +21,7 @@ async function readTemperament(name) {
   return JSON.parse(
     await readFile(new URL(`../temperaments/${name}.json`, import.meta.url), {
       encoding: "utf-8",
-    })
+    }),
   );
 }
 

@@ -244,7 +244,7 @@ export class Temperament {
   constructor(data) {
     if (!validate(data)) {
       throw new TypeError(
-        `Incorrect temperament format: ${ajv.errorsText(validate.errors)}`
+        `Incorrect temperament format: ${ajv.errorsText(validate.errors)}`,
       );
     }
 
@@ -342,7 +342,7 @@ export class Temperament {
     // octave of the octave base note.
     const baseOffset = this.getOffset(
       this._octaveBaseName,
-      this._referenceOctave
+      this._referenceOctave,
     );
     let offset = Math.log2(pitch / this._referencePitch) * OCTAVE_SIZE;
     offset = ((offset - baseOffset) % OCTAVE_SIZE) + baseOffset;
@@ -358,7 +358,7 @@ export class Temperament {
       const mid = Math.trunc((end + start) / 2);
       const midOffset = this.getOffset(
         this._noteNames[mid],
-        this._referenceOctave
+        this._referenceOctave,
       );
       if (offset > midOffset) {
         start = mid;
@@ -466,7 +466,7 @@ export class Temperament {
         [...this._offsets.entries()].map(([note, offset]) => [
           note,
           [this.referenceName, offset],
-        ])
+        ]),
       ),
     };
   }
