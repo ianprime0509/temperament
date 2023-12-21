@@ -146,5 +146,8 @@ follows:
 
 ## License
 
-This is free software, distributed under the
-[MIT license](https://opensource.org/licenses/MIT).
+This is free software, released under the
+[Zero Clause BSD License](https://spdx.org/licenses/0BSD.html), as found in the
+`LICENSE` file of this repository. This license places no restrictions on your
+use, modification, or redistribution of the library: providing attribution is
+appreciated, but not required.
